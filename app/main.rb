@@ -4,18 +4,25 @@ def setup args
 end
 
 def main_menu args
-  
+  # Draw Banner
+  # Draw Menu Items
+  # Track Selected Menu Item
+  # Change select with mouse or keyboard
+    # Keyboard: Track selected index and increment/decrement
+    # Mouse:  On mouse over label, select index
+  # On click/enter do something
+  # Maybe animate some background stuff
 end
 
 def game_over args
-  
+
 end
 
 def tick args
   if args.tick_count == 0
     setup args
   end
-  
+
   args.outputs.primitives << {x:0, y:0, w:1280, h:720, r:0, g:0, b:0}.solid!
 
   if args.state.game_state == :main_menu
