@@ -38,12 +38,58 @@ class MainMenu
       @selected_index = [0, @selected_index -1].max
     elsif args.inputs.keyboard.key_down.down
       @selected_index = [@selected_index + 1, @menu.size() -1].min
+
+      # Keybard: Allow direct select of an entry by number 1-9
     elsif args.inputs.keyboard.key_down.one
       @selected_index = 0
     elsif args.inputs.keyboard.key_down.two
-      @selected_index = 1
+      if @menu.size() > 1
+        @selected_index = 1
+      else
+        @selected_index = @menu.size() -1
+      end
     elsif args.inputs.keyboard.key_down.three
-      @selected_index = 2
+      if @menu.size() > 2
+        @selected_index = 2
+      else
+        @selected_index = @menu.size() -1
+      end
+    elsif args.inputs.keyboard.key_down.four
+      if @menu.size() > 3
+        @selected_index = 3
+      else
+        @selected_index = @menu.size() -1
+      end
+    elsif args.inputs.keyboard.key_down.five
+      if @menu.size() > 4
+        @selected_index = 4
+      else
+        @selected_index = @menu.size() -1
+      end
+    elsif args.inputs.keyboard.key_down.six
+      if @menu.size() > 5
+        @selected_index = 5
+      else
+        @selected_index = @menu.size() -1
+      end
+    elsif args.inputs.keyboard.key_down.seven
+      if @menu.size() > 6
+        @selected_index = 6
+      else
+        @selected_index = @menu.size() -1
+      end
+    elsif args.inputs.keyboard.key_down.eight
+      if @menu.size() > 7
+        @selected_index = 7
+      else
+        @selected_index = @menu.size() -1
+      end
+    elsif args.inputs.keyboard.key_down.nine
+      if @menu.size() > 8
+        @selected_index = 8
+      else
+        @selected_index = @menu.size() -1
+      end
     end
       # Mouse:  On mouse over label, select index
     # On click/enter do something
