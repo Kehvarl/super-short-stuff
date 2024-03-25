@@ -31,11 +31,22 @@ class MainMenu
       @frame_delay = 10
     end
 
+    # Track Selected Menu Item
+    # Change select with mouse or keyboard
+      # Keyboard: Track selected index and increment/decrement
     if args.inputs.keyboard.key_down.up
       @selected_index = [0, @selected_index -1].max
     elsif args.inputs.keyboard.key_down.down
       @selected_index = [@selected_index + 1, @menu.size() -1].min
+    elsif args.inputs.keyboard.key_down.one
+      @selected_index = 0
+    elsif args.inputs.keyboard.key_down.two
+      @selected_index = 1
+    elsif args.inputs.keyboard.key_down.three
+      @selected_index = 2
     end
+      # Mouse:  On mouse over label, select index
+    # On click/enter do something
   end
 
   def render
@@ -53,11 +64,7 @@ class MainMenu
         color = HIGHLIGHT_COLOR
       end
       out << {x:540, y:500 - (index * 30), text: "#{index+1}: #{@menu[index]}", **color}.label!
-      # Track Selected Menu Item
-      # Change select with mouse or keyboard
-        # Keyboard: Track selected index and increment/decrement
-        # Mouse:  On mouse over label, select index
-      # On click/enter do something
+
       # Maybe animate some background stuff
     end
     out
