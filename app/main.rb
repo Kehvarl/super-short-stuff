@@ -5,6 +5,14 @@ def setup args
   args.state.main_menu = MainMenu.new({})
 end
 
+def main_menu_tick args
+  args.state.main_menu.tick args
+  args.outputs.primitives << args.state.main_menu.render
+  if args.state.main_menu.select_event
+    puts args.state.main_menu.message
+  end
+end
+
 
 def game_over args
 
@@ -18,8 +26,7 @@ def tick args
   args.outputs.primitives << {x:0, y:0, w:1280, h:720, r:0, g:0, b:0}.solid!
 
   if args.state.game_state == :main_menu
-    args.state.main_menu.tick args
-    args.outputs.primitives << args.state.main_menu.render
+    main_menu_tick args
   elsif args.state.game_state == :player
     args.state.game_state = :enemy
   elsif args.state.game_State == :enemy
