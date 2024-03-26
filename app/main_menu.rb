@@ -9,18 +9,23 @@ class MainMenu
     [{r: 255, g: 255, b:255}, {r: 192, g: 192, b:192}, {r: 128, g: 128, b:128}, {r: 64, g: 64, b:64}, {r: 32, g: 32, b:32}],
   ].freeze
 
+  attr_accessor :message, :select_event, :selected_index, :menu
+
   def initialize args
     @frame = 0
     @frame_v = 1
     @frame_max = 3
     @frame_delay = 10
 
-    @menu = ["New Game", "Options", "Exit"]
+    @menu = [["New Game", :newgame], ["Options", :options], ["Exit", :exit]]
     @selected_index = 0
+    @select_event = false
+    @message = nil
   end
 
   def tick args
-
+    @select_event = false
+    
     @frame_delay -=1
     if @frame_delay <= 0
       @frame += @frame_v
@@ -90,6 +95,9 @@ class MainMenu
       else
         @selected_index = @menu.size() -1
       end
+    elsif args.inputs.keyboard.key_down.enter
+      @select_event = true
+      @message = @menu[@selected_index][1]
     end
       # Mouse:  On mouse over label, select index
     # On click/enter do something
@@ -109,7 +117,7 @@ class MainMenu
       if index == @selected_index
         color = HIGHLIGHT_COLOR
       end
-      out << {x:540, y:500 - (index * 30), text: "#{index+1}: #{@menu[index]}", **color}.label!
+      out << {x:540, y:500 - (index * 30), text: "#{index+1}: #{@menu[index][0]}", **color}.label!
 
       # Maybe animate some background stuff
     end

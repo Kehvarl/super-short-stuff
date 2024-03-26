@@ -20,6 +20,9 @@ def tick args
   if args.state.game_state == :main_menu
     args.state.main_menu.tick args
     args.outputs.primitives << args.state.main_menu.render
+    if args.state.main_menu.select_event
+      puts args.state.main_menu.message
+    end
   elsif args.state.game_state == :player
     args.state.game_state = :enemy
   elsif args.state.game_State == :enemy
