@@ -1,8 +1,10 @@
 require('app/main_menu.rb')
+require('app/game.rb')
 
 def setup args
   args.state.game_state = :main_menu
   args.state.main_menu = MainMenu.new({})
+  args.state.game = Game.new({})
 end
 
 def main_menu_tick args
@@ -25,13 +27,14 @@ def tick args
 
   args.outputs.primitives << {x:0, y:0, w:1280, h:720, r:0, g:0, b:0}.solid!
 
-  if args.state.game_state == :main_menu
+  case args.state.game_state
+  when :main_menu
     main_menu_tick args
-  elsif args.state.game_state == :player
+  when :player
     args.state.game_state = :enemy
-  elsif args.state.game_State == :enemy
+  when :enemy
     args.state.game_state = :player
-  elsif args.state.game_state == :game_over
+  when :game_over
     game_over args
   end
 end

@@ -9,6 +9,8 @@ class MainMenu
     [{r: 255, g: 255, b:255}, {r: 192, g: 192, b:192}, {r: 128, g: 128, b:128}, {r: 64, g: 64, b:64}, {r: 32, g: 32, b:32}],
   ].freeze
 
+  NUMBERS = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'].freeze
+
   attr_accessor :message, :select_event, :selected_index, :menu
 
   def initialize args
@@ -25,7 +27,7 @@ class MainMenu
 
   def tick args
     @select_event = false
-    
+
     @frame_delay -=1
     if @frame_delay <= 0
       @frame += @frame_v
@@ -39,66 +41,23 @@ class MainMenu
     # Track Selected Menu Item
     # Change select with mouse or keyboard
       # Keyboard: Track selected index and increment/decrement
-    if args.inputs.keyboard.key_down.up
-      @selected_index = [0, @selected_index -1].max
-    elsif args.inputs.keyboard.key_down.down
-      @selected_index = [@selected_index + 1, @menu.size() -1].min
-
-      # Keybard: Allow direct select of an entry by number 1-9
-    elsif args.inputs.keyboard.key_down.one
-      @selected_index = 0
-    elsif args.inputs.keyboard.key_down.two
-      if @menu.size() > 1
-        @selected_index = 1
+      if args.inputs.keyboard.key_down.up
+        @selected_index = [0, @selected_index - 1].max
+      elsif args.inputs.keyboard.key_down.down
+        @selected_index = [@selected_index + 1, @menu.size() - 1].min
+      elsif args.inputs.keyboard.key_down.enter
+        @select_event = true
+        @message = @menu[@selected_index][1]
       else
-        @selected_index = @menu.size() -1
+        # Iterate over keys one through nine
+        (0..9).each do |num|
+          if args.inputs.keyboard.key_down.send(:"#{NUMBERS[num]}")
+            index = num - 1
+            @selected_index = [@menu.size() - 1, index].min
+            break
+          end
+        end
       end
-    elsif args.inputs.keyboard.key_down.three
-      if @menu.size() > 2
-        @selected_index = 2
-      else
-        @selected_index = @menu.size() -1
-      end
-    elsif args.inputs.keyboard.key_down.four
-      if @menu.size() > 3
-        @selected_index = 3
-      else
-        @selected_index = @menu.size() -1
-      end
-    elsif args.inputs.keyboard.key_down.five
-      if @menu.size() > 4
-        @selected_index = 4
-      else
-        @selected_index = @menu.size() -1
-      end
-    elsif args.inputs.keyboard.key_down.six
-      if @menu.size() > 5
-        @selected_index = 5
-      else
-        @selected_index = @menu.size() -1
-      end
-    elsif args.inputs.keyboard.key_down.seven
-      if @menu.size() > 6
-        @selected_index = 6
-      else
-        @selected_index = @menu.size() -1
-      end
-    elsif args.inputs.keyboard.key_down.eight
-      if @menu.size() > 7
-        @selected_index = 7
-      else
-        @selected_index = @menu.size() -1
-      end
-    elsif args.inputs.keyboard.key_down.nine
-      if @menu.size() > 8
-        @selected_index = 8
-      else
-        @selected_index = @menu.size() -1
-      end
-    elsif args.inputs.keyboard.key_down.enter
-      @select_event = true
-      @message = @menu[@selected_index][1]
-    end
       # Mouse:  On mouse over label, select index
     # On click/enter do something
   end
