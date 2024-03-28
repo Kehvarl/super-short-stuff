@@ -1,5 +1,9 @@
 class Game
   def initialize args={}
+    # Are gravity and drag global or are they intrinsic to surfaces
+    # no drag in flight?
+    # Some surfaces have higher gravity?
+    # Can gravity cause X acceleration?
     @gravity = 1
     @drag = 0.1
     @player = {x:0, y:0, w:16, h:32, vx:0, vy:0, path:'sprites/circle/green.png'}.sprite!
@@ -9,7 +13,7 @@ class Game
     if @player.y > @player.h
       @player.vy -= @gravity
     end
-    
+
     if @player.vx > 0
       @player.vx -= @drag
     elsif @player.vx < 0
