@@ -12,6 +12,9 @@ def main_menu_tick args
   args.outputs.primitives << args.state.main_menu.render
   if args.state.main_menu.select_event
     puts args.state.main_menu.message
+    if args.state.main_menu.message == :newgame
+      args.state.game_state = :game
+    end
   end
 end
 
@@ -30,6 +33,9 @@ def tick args
   case args.state.game_state
   when :main_menu
     main_menu_tick args
+  when :game
+    args.state.game.tick args
+    args.outputs.primitives << args.state.game.render()
   when :player
     args.state.game_state = :enemy
   when :enemy
