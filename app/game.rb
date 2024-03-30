@@ -2,11 +2,10 @@ class Game
   def initialize args={}
     # Are gravity and drag global or are they intrinsic to surfaces
     # no drag in flight?
-    # Some surfaces have higher gravity?
-    # Can gravity cause X acceleration?
+    # lets keep gravity simple for now
     @gravity = 1
     @drag = 0.1
-    @player = {x:0, y:0, w:16, h:32, vx:0, vy:0, path:'sprites/circle/green.png'}.sprite!
+    @player = {x:0, y:0, w:16, h:32, vx:0, vy:0, jump:0, path:'sprites/circle/green.png'}.sprite!
   end
 
   def tick args
@@ -20,7 +19,8 @@ class Game
       @player.vx += @drag
     end
 
-    if args.inputs.keyboard.up and @player.y <= @player.h
+    if args.inputs.keyboard.up and @player.jump <3
+      @player.jump += 1
       @player.vy += 10
     elsif args.inputs.keyboard.down
       @player.vy -=1
@@ -35,10 +35,11 @@ class Game
     @player.y += @player.vy
     if @player.x <0 or @player.x > 1280-@player.w
       @player.x -= @player.vx
-      @player.vx = 0
+      @player.vx = -@player.vx
     end
     if @player.y < @player.h
       @player.vy = 0
+      @player.jump = 0
       @player.y = @player.h
     end
   end
