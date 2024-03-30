@@ -6,6 +6,10 @@ class Game
     @gravity = 1
     @drag = 0.1
     @player = {x:0, y:0, w:16, h:32, vx:0, vy:0, jump:0, path:'sprites/circle/green.png'}.sprite!
+    @map = [
+      {x:250, y:100, w:200, h:32, solid:true, path:'sprites/square/gray.png'}.sprite!,
+      {x:500, y:200, w:200, h:32, solid:true, path:'sprites/square/gray.png'}.sprite!
+    ]
   end
 
   def tick args
@@ -19,7 +23,7 @@ class Game
       @player.vx += @drag
     end
 
-    if args.inputs.keyboard.up and @player.jump <3
+    if args.inputs.keyboard.up and @player.jump < 2
       @player.jump += 1
       @player.vy += 10
     elsif args.inputs.keyboard.down
@@ -37,6 +41,16 @@ class Game
       @player.x -= @player.vx
       @player.vx = -@player.vx
     end
+
+    collision = args.geometry.find_intersect_rect @player, @map
+    if collision and collision.y >= @player.y
+      @player.vy = -1
+    elsif collision and collision.y <= @player.y
+      @player.vy = 0
+      @player.jump = 0
+      @player.y = collision.y + @player.h
+    end
+
     if @player.y < @player.h
       @player.vy = 0
       @player.jump = 0
@@ -47,6 +61,7 @@ class Game
   def render
     out = []
     out << @player
+    out << @map
     out
   end
 end
