@@ -3,8 +3,8 @@ devid=kehvarl
 devtitle=Kehvarl
 gameid=sss
 gametitle=Super Short Stuff
-# version=0.1
-# icon=metadata/icon.png
+version=0.1
+icon=metadata/icon.png
 
 # === Flags available at all licensing tiers ===
 
