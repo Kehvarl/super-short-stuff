@@ -10,6 +10,12 @@ class Game
       {x:250, y:100, w:200, h:32, solid:true, path:'sprites/square/gray.png'}.sprite!,
       {x:500, y:200, w:200, h:32, solid:true, path:'sprites/square/gray.png'}.sprite!
     ]
+    @entities = [
+      {x:342, y:132, w:16, h:32, vx:0, vy:0, jump:0, path:'sprites/circle/yellow.png'}.sprite!,
+      {x:342, y:182, w:16, h:32, vx:0, vy:0, jump:0, path:'sprites/circle/yellow.png'}.sprite!,
+      {x:592, y:232, w:16, h:32, vx:0, vy:0, jump:0, path:'sprites/circle/yellow.png'}.sprite!
+
+    ]
   end
 
   def tick args
@@ -51,6 +57,13 @@ class Game
       @player.y = collision.y + @player.h
     end
 
+    collision = args.geometry.find_intersect_rect @player, @entities
+    if collision
+      # Play pickup animation at collision locaiton
+    end
+    @entities = @entities.select {|e| !args.geometry.intersect_rect?(e, @player)}
+
+
     if @player.y < @player.h
       @player.vy = 0
       @player.jump = 0
@@ -61,6 +74,7 @@ class Game
   def render
     out = []
     out << @player
+    out << @entities
     out << @map
     out
   end
