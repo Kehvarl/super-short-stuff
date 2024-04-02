@@ -14,8 +14,8 @@ class Game
       {x:342, y:132, w:16, h:32, vx:0, vy:0, jump:0, path:'sprites/circle/yellow.png'}.sprite!,
       {x:342, y:182, w:16, h:32, vx:0, vy:0, jump:0, path:'sprites/circle/yellow.png'}.sprite!,
       {x:592, y:232, w:16, h:32, vx:0, vy:0, jump:0, path:'sprites/circle/yellow.png'}.sprite!
-
     ]
+    @bullets = []
   end
 
   def tick args
@@ -29,9 +29,11 @@ class Game
       @player.vx += @drag
     end
 
-    if args.inputs.keyboard.up and @player.jump < 2
+    @bullets.each {|b| b.x += b.vx}
+
+    if args.inputs.keyboard.key_down.up and @player.jump < 2
       @player.jump += 1
-      @player.vy += 10
+      @player.vy = @player.jump * 10
     elsif args.inputs.keyboard.down
       @player.vy -=1
     end
@@ -39,6 +41,10 @@ class Game
       @player.vx -=1
     elsif args.inputs.keyboard.right
       @player.vx += 1
+    end
+
+    if args.inputs.keyboard.key_down.space
+      @bullets << {x:@player.x+@player.w, y:@player.y+4, w:4, h:4, vx:@player.vx+5, r:0, g:128, b:128}.solid!
     end
 
     @player.x += @player.vx
@@ -75,6 +81,7 @@ class Game
     out = []
     out << @player
     out << @entities
+    out << @bullets
     out << @map
     out
   end
