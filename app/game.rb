@@ -13,7 +13,9 @@ class Game
     @entities = [
       {x:342, y:132, w:16, h:32, vx:0, vy:0, jump:0, path:'sprites/circle/yellow.png'}.sprite!,
       {x:342, y:182, w:16, h:32, vx:0, vy:0, jump:0, path:'sprites/circle/yellow.png'}.sprite!,
-      {x:592, y:232, w:16, h:32, vx:0, vy:0, jump:0, path:'sprites/circle/yellow.png'}.sprite!
+      {x:592, y:232, w:16, h:32, vx:0, vy:0, jump:0, path:'sprites/circle/yellow.png'}.sprite!,
+      {x:592, y:32, w:16, h:32, vx:0, vy:0, jump:0, path:'sprites/circle/yellow.png'}.sprite!
+
     ]
     @bullets = []
   end
@@ -68,6 +70,15 @@ class Game
       # Play pickup animation at collision locaiton
     end
     @entities = @entities.select {|e| !args.geometry.intersect_rect?(e, @player)}
+
+    @bullets.each do |b|
+      collisions = args.geometry.find_all_intersect_rect b, @entities
+      collisions.each do |bc|
+        puts bc
+      end
+    end
+    @bullets = @bullets.select{|b| (args.geometry.find_all_intersect_rect b, @entities) == []}
+
 
 
     if @player.y < @player.h
