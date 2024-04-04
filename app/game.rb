@@ -75,6 +75,9 @@ class Game
       collisions = args.geometry.find_all_intersect_rect b, @entities
       collisions.each do |bc|
         puts bc
+        # If damageable, then to damage
+        # Play shot hit animation
+        # If destroyed, do the thing
       end
     end
     @bullets = @bullets.select{|b| (args.geometry.find_all_intersect_rect b, @entities) == []}
