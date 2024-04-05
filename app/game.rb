@@ -14,7 +14,7 @@ class Game
       {x:342, y:132, w:16, h:32, vx:0, vy:0, jump:0, path:'sprites/circle/yellow.png'}.sprite!,
       {x:342, y:182, w:16, h:32, vx:0, vy:0, jump:0, path:'sprites/circle/yellow.png'}.sprite!,
       {x:592, y:232, w:16, h:32, vx:0, vy:0, jump:0, path:'sprites/circle/yellow.png'}.sprite!,
-      {x:592, y:32, w:16, h:32, vx:0, vy:0, jump:0, path:'sprites/circle/yellow.png'}.sprite!
+      {x:592, y:32, w:16, h:32, vx:0, vy:0, jump:0, hp: 5, path:'sprites/circle/yellow.png'}.sprite!
 
     ]
     @bullets = []
@@ -74,15 +74,16 @@ class Game
     @bullets.each do |b|
       collisions = args.geometry.find_all_intersect_rect b, @entities
       collisions.each do |bc|
-        puts bc
         # If damageable, then to damage
+        if bc.hp
+          bc.hp -=1
+        end
         # Play shot hit animation
         # If destroyed, do the thing
       end
     end
     @bullets = @bullets.select{|b| (args.geometry.find_all_intersect_rect b, @entities) == []}
-
-
+    @entities = @entities.select {|e| (! e.key?(:hp)) or (e.hp > 0)}
 
     if @player.y < @player.h
       @player.vy = 0
