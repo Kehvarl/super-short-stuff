@@ -10,14 +10,23 @@ class Game
       {x:250, y:100, w:200, h:32, solid:true, path:'sprites/square/gray.png'}.sprite!,
       {x:500, y:200, w:200, h:32, solid:true, path:'sprites/square/gray.png'}.sprite!
     ]
-    @entities = [
-      {x:342, y:132, w:16, h:32, vx:0, vy:0, jump:0, path:'sprites/circle/yellow.png'}.sprite!,
-      {x:342, y:182, w:16, h:32, vx:0, vy:0, jump:0, path:'sprites/circle/yellow.png'}.sprite!,
-      {x:592, y:232, w:16, h:32, vx:0, vy:0, jump:0, path:'sprites/circle/yellow.png'}.sprite!,
-      {x:592, y:32, w:16, h:32, vx:0, vy:0, jump:0, hp: 5, path:'sprites/circle/yellow.png'}.sprite!
-
-    ]
+    @entities = []
     @bullets = []
+
+    make_entity(342, 132, hp=nil, path='sprites/circle/yellow.png')
+    make_entity(342, 182, hp=nil, path='sprites/circle/blue.png')
+    make_entity(500,  32, hp=nil, path='sprites/circle/violet.png')
+    make_entity(760, 32, hp=5)
+
+  end
+
+  def make_entity(x, y, hp = nil, path = 'sprites/circle/orange.png')
+    e =  {x:x, y:y, w:16, h:32, vx:0, vy:0, jump:0, path:path}.sprite!
+    puts hp
+    if hp != nil
+      e.hp = hp
+    end
+    @entities << e
   end
 
   def tick args
