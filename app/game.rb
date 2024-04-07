@@ -76,7 +76,7 @@ class Game
 
     collision = args.geometry.find_intersect_rect @player, @entities
     if collision
-      # Play pickup animation at collision locaiton
+      # TODO: Play pickup animation at collision locaiton
     end
     @entities = @entities.select {|e| !args.geometry.intersect_rect?(e, @player)}
 
@@ -87,8 +87,8 @@ class Game
         if bc.hp
           bc.hp -=1
         end
-        # Play shot hit animation
-        # If destroyed, do the thing
+        # TODO: Play shot hit animation
+        # TODO: If destroyed, do the thing
       end
     end
     @bullets = @bullets.select{|b| (args.geometry.find_all_intersect_rect b, @entities) == []}
