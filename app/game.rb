@@ -5,6 +5,7 @@ class Game
     # lets keep gravity simple for now
     @gravity = 1
     @drag = 0.1
+    @max_v = 10
     @player = {x:0, y:0, w:16, h:32, vx:0, vy:0, jump:0, path:'sprites/circle/green.png'}.sprite!
     @map = [
       {x:250, y:100, w:200, h:32, solid:true, path:'sprites/square/gray.png'}.sprite!,
@@ -49,9 +50,9 @@ class Game
       @player.vy -=1
     end
     if args.inputs.keyboard.left
-      @player.vx -=1
+      @player.vx = [@player.vx-1, -@max_v].max()
     elsif args.inputs.keyboard.right
-      @player.vx += 1
+      @player.vx = [@player.vx+1, @max_v].min()
     end
 
     if args.inputs.keyboard.key_down.space
