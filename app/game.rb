@@ -1,5 +1,16 @@
 class Game
   def initialize args={}
+  end
+
+  def tick args
+  end
+
+  def render args
+  end
+end
+
+class Leap < Game
+  def initialize args={}
     # Are gravity and drag global or are they intrinsic to surfaces
     # no drag in flight?
     # lets keep gravity simple for now
