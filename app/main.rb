@@ -47,6 +47,11 @@ end
 
 
 # TODO
+# Need some actual game concept
+  # We know its a platformer
+  # What is the main character
+  # What sort of Enemies
+  # How does the world move
 # Draw some terrain - done
 # Draw a character - done
 # Jump - done
