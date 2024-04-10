@@ -47,10 +47,14 @@ end
 
 
 # TODO
-# Draw some terrain
-# Draw a character
-# Jump
+# Draw some terrain - done
+# Draw a character - done
+# Jump - done
 # Collision detection
+  # Ground - done
+  # Sides  - done
+  # Terrain - done
+  # Entities - done
 # Animated Sprite
 # Animated Terrain
 # Enemies
