@@ -45,7 +45,7 @@ def tick args
   end
 end
 
-
+# update
 # TODO
 # Need some actual game concept
   # We know its a platformer
