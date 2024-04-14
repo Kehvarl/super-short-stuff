@@ -53,6 +53,7 @@ end
   # What is the main character
   # What sort of Enemies
   # How does the world move
+  # Would it be worhtwhile to start over from the platformer demo code?
 # Draw some terrain - done
 # Draw a character - done
 # Jump - done
