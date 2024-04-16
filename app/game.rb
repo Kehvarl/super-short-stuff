@@ -9,6 +9,49 @@ class Game
   end
 end
 
+class Snake < Game
+  def initialize args={}
+    @playfield = {}
+    @snake_length = 3
+    @snake_direction = [1,0]
+    @snake = []
+    @food = []
+    @cooldown = 20
+  end
+
+  def tick args
+    @cooldown -=1
+    if @cooldown <= 0
+      @cooldown = 20
+      #turn_tick(args)
+    end
+  end
+
+  def turn_tick args
+    @snake.drop(1)
+    head = @snake[-1].dup()
+    head.x += @snake_direction[0]
+    head.y += @snake_direction[1]
+    @snake.append(head)
+  end
+
+  def draw_snake
+    [
+      {x: 0, y: 0, w: 16, h: 16, path: "sprites/square/green.png"}.sprite!,
+      {x: 16, y: 0, w: 16, h: 16, path: "sprites/square/green.png"}.sprite!,
+      {x: 32, y: 0, w: 16, h: 16, path: "sprites/circle/green.png"}.sprite!,
+    ]
+  end
+
+  def render
+    out = []
+    #out << @playfield
+    out << draw_snake
+    #out << @food
+    out
+  end
+end
+
 class Leap < Game
   def initialize args={}
     # Are gravity and drag global or are they intrinsic to surfaces

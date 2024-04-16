@@ -4,7 +4,7 @@ require('app/game.rb')
 def setup args
   args.state.game_state = :main_menu
   args.state.main_menu = MainMenu.new({})
-  args.state.game = Leap.new({})
+  args.state.game = Snake.new({})
 end
 
 def main_menu_tick args
