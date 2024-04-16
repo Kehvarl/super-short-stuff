@@ -4,7 +4,6 @@ require('app/game.rb')
 def setup args
   args.state.game_state = :main_menu
   args.state.main_menu = MainMenu.new({})
-  args.state.game = Snake.new({})
 end
 
 def main_menu_tick args
@@ -12,7 +11,13 @@ def main_menu_tick args
   args.outputs.primitives << args.state.main_menu.render
   if args.state.main_menu.select_event
     puts args.state.main_menu.message
-    if args.state.main_menu.message == :newgame
+    if args.state.main_menu.message == :newgame_snake
+      args.state.game = Snake.new({})
+      args.state.game_state = :game
+    elsif args.state.main_menu.message == :newgame_leap
+      args.state.game = Leap.new({})
+      args.state.game_state = :game
+    elsif args.state.main_menu.message == :continue
       args.state.game_state = :game
     end
   end
@@ -32,6 +37,8 @@ def tick args
 
   case args.state.game_state
   when :main_menu
+    main_menu_tick args
+  when :pause_menu
     main_menu_tick args
   when :game
     args.state.game.tick args

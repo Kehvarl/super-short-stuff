@@ -3,6 +3,9 @@ class Game
   end
 
   def tick args
+    if args.inputs.keyboard.key_down.escape
+      args.state.game_state = :pause_menu
+    end
   end
 
   def render args
@@ -20,6 +23,7 @@ class Snake < Game
   end
 
   def tick args
+    super args
     @cooldown -=1
     if @cooldown <= 0
       @cooldown = 20
@@ -85,6 +89,7 @@ class Leap < Game
   end
 
   def tick args
+    super args
     if @player.y > @player.h
       @player.vy -= @gravity
     end
