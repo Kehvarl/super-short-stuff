@@ -17,7 +17,7 @@ class Snake < Game
     @playfield = {}
     @snake_length = 3
     @snake_direction = [1,0]
-    @snake = []
+    @snake = [{x:0,y:0}, {x:1,y:0}, {x:2,y:0}]
     @food = []
     @cooldown = 20
   end
@@ -27,24 +27,41 @@ class Snake < Game
     @cooldown -=1
     if @cooldown <= 0
       @cooldown = 20
-      #turn_tick(args)
+      turn_tick(args)
     end
   end
 
   def turn_tick args
-    @snake.drop(1)
+    if @snake.size >= @snake_length
+      @snake = @snake.drop(1)
+    end
     head = @snake[-1].dup()
     head.x += @snake_direction[0]
     head.y += @snake_direction[1]
     @snake.append(head)
+
+    if args.inputs.keyboard.key_down.up
+      @snake_direction = [0,1]
+    elsif args.inputs.keyboard.key_down.down
+      @snake_direction = [0,-1]
+    elsif args.inputs.keyboard.key_down.left
+      @snake_direction = [-1, 0]
+    elsif args.inputs.keyboard.key_down.right
+      @snake_direction = [1,0]
+    end   
   end
 
   def draw_snake
-    [
-      {x: 0, y: 0, w: 16, h: 16, path: "sprites/square/green.png"}.sprite!,
-      {x: 16, y: 0, w: 16, h: 16, path: "sprites/square/green.png"}.sprite!,
-      {x: 32, y: 0, w: 16, h: 16, path: "sprites/circle/green.png"}.sprite!,
-    ]
+    out = []
+    @snake.each do |s|
+      puts(s)
+      if s == @snake[-1]
+        out << {x: s.x*16, y: s.y*16, w: 16, h: 16, path: "sprites/circle/green.png"}.sprite!
+      else
+        out << {x: s.x*16, y: s.y*16, w: 16, h: 16, path: "sprites/square/green.png"}.sprite!
+      end
+    end
+    out
   end
 
   def render
