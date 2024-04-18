@@ -25,7 +25,7 @@ class Snake < Game
   def tick args
     super args
     @cooldown -=1
-    if @cooldown <= 0
+    if @cooldown <= 0 or args.inputs.keyboard.active
       @cooldown = 20
       turn_tick(args)
     end
@@ -48,7 +48,7 @@ class Snake < Game
       @snake_direction = [-1, 0]
     elsif args.inputs.keyboard.key_down.right
       @snake_direction = [1,0]
-    end   
+    end
   end
 
   def draw_snake
