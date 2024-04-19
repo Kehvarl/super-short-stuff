@@ -18,6 +18,7 @@ class Snake < Game
     @snake_length = 3
     @snake_direction = [1,0]
     @snake = [{x:0,y:0}, {x:1,y:0}, {x:2,y:0}]
+    @food_count = 3
     @food = []
     @cooldown = 20
   end
@@ -28,6 +29,11 @@ class Snake < Game
     if @cooldown <= 0 or args.inputs.keyboard.active
       @cooldown = 20
       turn_tick(args)
+    end
+    if @food.size() < @food_count
+      fx = [*1..30].sample
+      fy = [*1..20].sample
+      @food << {x:fx*16, y:fy*16, w:16, h:16, path:"sprites/hexagon/red.png"}
     end
   end
 
@@ -68,7 +74,7 @@ class Snake < Game
     out = []
     #out << @playfield
     out << draw_snake
-    #out << @food
+    out << @food
     out
   end
 end
