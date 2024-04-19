@@ -18,6 +18,7 @@ class Snake < Game
     @snake_length = 3
     @snake_direction = [1,0]
     @snake = [{x:0,y:0}, {x:1,y:0}, {x:2,y:0}]
+    @food_count = 3
     @food = []
     @cooldown = 20
   end
@@ -28,6 +29,11 @@ class Snake < Game
     if @cooldown <= 0 or args.inputs.keyboard.active
       @cooldown = 20
       turn_tick(args)
+    end
+    if @food.size() < @food_count
+      fx = [*1..30].sample
+      fy = [*1..20].sample
+      @food << {x:fx, y:fy}
     end
   end
 
@@ -54,7 +60,7 @@ class Snake < Game
   def draw_snake
     out = []
     @snake.each do |s|
-      puts(s)
+      #puts(s)
       if s == @snake[-1]
         out << {x: s.x*16, y: s.y*16, w: 16, h: 16, path: "sprites/circle/green.png"}.sprite!
       else
@@ -64,11 +70,19 @@ class Snake < Game
     out
   end
 
+  def draw_food
+    out = []
+    @food.each do |f|
+      out << {x:f.x*16, y:f.y*16, w:16, h:16, path:"sprites/hexagon/red.png"}
+    end
+    out
+  end
+
   def render
     out = []
     #out << @playfield
     out << draw_snake
-    #out << @food
+    out << draw_food
     out
   end
 end
@@ -98,7 +112,7 @@ class Leap < Game
 
   def make_entity(x, y, hp = nil, path = 'sprites/circle/orange.png')
     e =  {x:x, y:y, w:16, h:32, vx:0, vy:0, jump:0, path:path}.sprite!
-    puts hp
+    #puts hp
     if hp != nil
       e.hp = hp
     end
