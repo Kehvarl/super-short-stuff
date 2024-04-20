@@ -30,6 +30,13 @@ class Snake < Game
       @cooldown = 20
       turn_tick(args)
     end
+
+    h = @snake[-1]
+    if @food.include?(h)
+      @food = @food.select{|f| f.x != h.x or f.y != h.y}
+      @snake_length += 1
+    end
+
     if @food.size() < @food_count
       fx = [*1..30].sample
       fy = [*1..20].sample
