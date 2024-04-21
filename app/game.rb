@@ -26,7 +26,7 @@ class Snake < Game
   def tick args
     super args
     @cooldown -=1
-    if @cooldown <= 0 or args.inputs.keyboard.active
+    if @cooldown <= 0 or args.inputs.keyboard.keys[:down].size > 0
       @cooldown = 20
       turn_tick(args)
     end
