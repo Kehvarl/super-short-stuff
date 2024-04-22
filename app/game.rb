@@ -16,8 +16,9 @@ class Snake < Game
   def initialize args={}
     @playfield = {}
     @snake_length = 3
-    @snake_direction = [1,0]
-    @snake = [{x:0,y:0}, {x:1,y:0}, {x:2,y:0}]
+    @snake_direction = [1,0,0]
+    @snake_pd = 0
+    @snake = [{x:0,y:0,d:0,pd:0}, {x:1,y:0,d:0,pd:0}, {x:2,y:0,d:0,pd:0}]
     @food_count = 3
     @food = []
     @cooldown = 20
@@ -32,7 +33,8 @@ class Snake < Game
     end
 
     h = @snake[-1]
-    if @food.include?(h)
+    ch = {x:h.x, y:h.y}
+    if @food.include?(ch)
       @food = @food.select{|f| f.x != h.x or f.y != h.y}
       @snake_length += 1
     end
@@ -51,16 +53,19 @@ class Snake < Game
     head = @snake[-1].dup()
     head.x += @snake_direction[0]
     head.y += @snake_direction[1]
+    head.d = @snake_direction[2]
+    head.pd = @snake_pd
     @snake.append(head)
 
+    @snake_pd = @snake_direction[2]
     if args.inputs.keyboard.key_down.up
-      @snake_direction = [0,1]
+      @snake_direction = [0,1,90]
     elsif args.inputs.keyboard.key_down.down
-      @snake_direction = [0,-1]
+      @snake_direction = [0,-1,270]
     elsif args.inputs.keyboard.key_down.left
-      @snake_direction = [-1, 0]
+      @snake_direction = [-1,0,180]
     elsif args.inputs.keyboard.key_down.right
-      @snake_direction = [1,0]
+      @snake_direction = [1,0,0]
     end
   end
 
@@ -69,9 +74,9 @@ class Snake < Game
     @snake.each do |s|
       #puts(s)
       if s == @snake[-1]
-        out << {x: s.x*16, y: s.y*16, w: 16, h: 16, path: "sprites/circle/green.png"}.sprite!
+        out << {x: s.x*16, y: s.y*16, w: 16, h: 16, angle: s.d, path: "sprites/circle/green.png"}.sprite!
       else
-        out << {x: s.x*16, y: s.y*16, w: 16, h: 16, path: "sprites/square/green.png"}.sprite!
+        out << {x: s.x*16, y: s.y*16, w: 16, h: 16, angle: s.d, path: "sprites/square/green.png"}.sprite!
       end
     end
     out
