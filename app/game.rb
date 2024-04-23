@@ -18,7 +18,7 @@ class Snake < Game
     @snake_length = 3
     @snake_direction = [1,0,0]
     @snake_pd = 0
-    @snake = [{x:0,y:0,d:0,pd:0}, {x:1,y:0,d:0,pd:0}, {x:2,y:0,d:0,pd:0}]
+    @snake = [{x:0,y:0,d:0,nd:0}, {x:1,y:0,d:0,nd:0}, {x:2,y:0,d:0,nd:0}]
     @food_count = 3
     @food = []
     @cooldown = 20
@@ -51,10 +51,11 @@ class Snake < Game
       @snake = @snake.drop(1)
     end
     head = @snake[-1].dup()
+    @snake[-1].nd = @snake_direction[2]
     head.x += @snake_direction[0]
     head.y += @snake_direction[1]
     head.d = @snake_direction[2]
-    head.pd = @snake_pd
+    head.nd = 0
     @snake.append(head)
 
     @snake_pd = @snake_direction[2]
@@ -76,7 +77,7 @@ class Snake < Game
       if s == @snake[-1]
         out << {x: s.x*16, y: s.y*16, w: 16, h: 16, angle: s.d, path: "sprites/circle/green.png"}.sprite!
       else
-        out << {x: s.x*16, y: s.y*16, w: 16, h: 16, angle: s.d, path: "sprites/square/green.png"}.sprite!
+        out << {x: s.x*16, y: s.y*16, w: 16, h: 16, angle: s.nd, path: "sprites/square/green.png"}.sprite!
       end
     end
     out
