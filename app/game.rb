@@ -40,10 +40,22 @@ class Snake < Game
     end
 
     if @food.size() < @food_count
-      fx = [*1..30].sample
-      fy = [*1..20].sample
-      @food << {x:fx, y:fy}
+      @food << generate_food()
     end
+  end
+
+  def generate_food()
+    good_food = false
+    while not good_food
+      fx = [*1..(1280.div(16) -2)].sample
+      fy = [*1..(720.div(16) -2)].sample
+      good_food = true
+      @playfield.each{|p| if p.x == fx and p.y == fy then good_food = false end}
+      @snake.each{|s| if s.x == fx and s.y == fy then good_food = false end}
+      @food.each{|f| if f.x == fx and f.y == fy then good_food = false end}
+    end
+
+    {x:fx, y:fy}
   end
 
   def turn_tick args
