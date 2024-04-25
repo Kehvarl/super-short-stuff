@@ -44,6 +44,13 @@ class Snake < Game
     end
   end
 
+  def check_all_impacts(x, y)
+    si = @snake.select{|s| s.x == x and s.y == y}
+    fi = @food.select{|f| f.x == x and f.y == y}
+    pi = @playfield.select{|p| p.x == x and p.y == y}
+    si.size == 1 and  (fi.size == pi.size == 0)
+  end
+
   def generate_food()
     good_food = false
     while not good_food
