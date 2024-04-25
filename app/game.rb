@@ -33,8 +33,8 @@ class Snake < Game
     end
 
     h = @snake[-1]
-    ch = {x:h.x, y:h.y}
-    if @food.include?(ch)
+    fi = @food.select{|f| f.x == h.x and f.y == h.y}
+    if fi.size() > 0
       @food = @food.select{|f| f.x != h.x or f.y != h.y}
       @snake_length += 1
     end
