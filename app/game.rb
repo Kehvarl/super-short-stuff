@@ -33,8 +33,8 @@ class Snake < Game
     end
 
     h = @snake[-1]
-    ch = {x:h.x, y:h.y}
-    if @food.include?(ch)
+    fi = @food.select{|f| f.x == h.x and f.y == h.y}
+    if fi.size() > 0
       @food = @food.select{|f| f.x != h.x or f.y != h.y}
       @snake_length += 1
     end
@@ -42,6 +42,13 @@ class Snake < Game
     if @food.size() < @food_count
       @food << generate_food()
     end
+  end
+
+  def check_all_impacts(x, y)
+    si = @snake.select{|s| s.x == x and s.y == y}
+    fi = @food.select{|f| f.x == x and f.y == y}
+    pi = @playfield.select{|p| p.x == x and p.y == y}
+    si.size == 1 and  (fi.size == pi.size == 0)
   end
 
   def generate_food()
