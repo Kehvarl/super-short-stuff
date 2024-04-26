@@ -48,7 +48,7 @@ class Snake < Game
     si = @snake.select{|s| s.x == x and s.y == y}
     fi = @food.select{|f| f.x == x and f.y == y}
     pi = @playfield.select{|p| p.x == x and p.y == y}
-    si.size == 1 and  (fi.size == pi.size == 0)
+    si.size == 1 and (fi.size == 0 and pi.size == 0)
   end
 
   def generate_food()
@@ -89,6 +89,19 @@ class Snake < Game
     end
   end
 
+  def get_segment(p,n)
+    if p == n
+      return 'blue.png' #'snake_body.png'
+    elsif p-90 == n or (p == 0 and n == 270)
+      return 'green.png' #'snake_right.png'
+    elsif p+90 == n or (p == 270 and n == 0)
+      return 'red.png' #'snake_left.png'
+    else
+      puts("#{p}, #{n}")
+      return 'gray.png' #'snake_body.png'
+    end
+  end
+
   def draw_snake
     out = []
     @snake.each do |s|
@@ -96,7 +109,7 @@ class Snake < Game
       if s == @snake[-1]
         out << {x: s.x*16, y: s.y*16, w: 16, h: 16, angle: s.d, path: "sprites/circle/green.png"}.sprite!
       else
-        out << {x: s.x*16, y: s.y*16, w: 16, h: 16, angle: s.nd, path: "sprites/square/green.png"}.sprite!
+        out << {x: s.x*16, y: s.y*16, w: 16, h: 16, angle: s.nd, path: "sprites/square/#{get_segment(s.d, s.nd)}"}.sprite!
       end
     end
     out
