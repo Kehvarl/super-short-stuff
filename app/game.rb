@@ -14,6 +14,7 @@ end
 
 class Snake < Game
   def initialize args={}
+    @score = 0
     @playfield = {}
     @snake_length = 3
     @snake_direction = [1,0,0]
@@ -37,6 +38,7 @@ class Snake < Game
     if fi.size() > 0
       @food = @food.select{|f| f.x != h.x or f.y != h.y}
       @snake_length += 1
+      @score += fi[0].score
     end
 
     if @food.size() < @food_count
@@ -62,7 +64,7 @@ class Snake < Game
       @food.each{|f| if f.x == fx and f.y == fy then good_food = false end}
     end
 
-    {x:fx, y:fy}
+    {x:fx, y:fy, score: [100,100,100,250,250,500].sample()}
   end
 
   def turn_tick args
