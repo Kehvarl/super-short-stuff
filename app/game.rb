@@ -64,7 +64,7 @@ class Snake < Game
       @food.each{|f| if f.x == fx and f.y == fy then good_food = false end}
     end
 
-    {x:fx, y:fy, score: [100,100,100,250,250,500].sample()}
+    {x:fx, y:fy, score: [100,100,100,250,250,500].sample(), color: ['red', 'red', 'red', 'blue', 'green'].sample()}
   end
 
   def turn_tick args
@@ -120,7 +120,7 @@ class Snake < Game
   def draw_food
     out = []
     @food.each do |f|
-      out << {x:f.x*16, y:f.y*16, w:16, h:16, path:"sprites/hexagon/red.png"}
+      out << {x:f.x*16, y:f.y*16, w:16, h:16, path:"sprites/hexagon/#{f.color}.png"}
     end
     out
   end
