@@ -77,6 +77,17 @@ class Snake < Game
     head.y += @snake_direction[1]
     head.d = @snake_direction[2]
     head.nd = 0
+    if head.x < 0
+      head.x = 1280/16
+    elsif head.x > 1280/16
+      head.x = 0
+    end
+    if head.y < 0
+      head.y = 720/16
+    elsif head.y > 720/16
+      head.y = 0
+    end 
+
     @snake.append(head)
 
     @snake_pd = @snake_direction[2]
