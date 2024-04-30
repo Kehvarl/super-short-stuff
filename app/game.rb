@@ -15,7 +15,7 @@ end
 class Snake < Game
   def initialize args={}
     @score = 0
-    @playfield = {}
+    @playfield = [{x:0,y:0,w:1,h:(720/16)}]
     @snake_length = 3
     @snake_direction = [1,0,0]
     @snake_pd = 0
@@ -86,7 +86,7 @@ class Snake < Game
       head.y = 720/16
     elsif head.y > 720/16
       head.y = 0
-    end 
+    end
 
     @snake.append(head)
 
@@ -115,6 +115,18 @@ class Snake < Game
     end
   end
 
+  def draw_playfield
+    out = []
+    @playfield.each do |p|
+      (0..p.w-1).each do |pw|
+        (0..p.h-1).each do |ph|
+          out << {x: pw*16, y: ph*16, w:16, h:16, path: "sprites/square/gray.png"}.sprite!
+        end
+      end
+    end
+    out
+  end
+
   def draw_snake
     out = []
     @snake.each do |s|
@@ -138,7 +150,7 @@ class Snake < Game
 
   def render
     out = []
-    #out << @playfield
+    out << draw_playfield
     out << draw_snake
     out << draw_food
     out
