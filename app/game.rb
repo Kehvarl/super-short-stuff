@@ -15,7 +15,7 @@ end
 class Snake < Game
   def initialize args={}
     @score = 0
-    @playfield = [{x:0,y:0,w:1,h:(720/16)}]
+    @playfield = [{x:0,y:0,w:1,h:(720/16)}, {x:1,y:0,w:(1280/16),h:1}]
     @snake_length = 3
     @snake_direction = [1,0,0]
     @snake_pd = 0
