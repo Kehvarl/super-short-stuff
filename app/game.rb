@@ -19,7 +19,7 @@ class Snake < Game
     @snake_length = 3
     @snake_direction = [1,0,0]
     @snake_pd = 0
-    @snake = [{x:0,y:0,d:0,nd:0}, {x:1,y:0,d:0,nd:0}, {x:2,y:0,d:0,nd:0}]
+    @snake = [{x:1,y:1,d:0,nd:0}, {x:2,y:1,d:0,nd:0}, {x:3,y:1,d:0,nd:0}]
     @food_count = 3
     @food = []
     @cooldown = 20
@@ -50,7 +50,8 @@ class Snake < Game
     si = @snake.select{|s| s.x == x and s.y == y}
     fi = @food.select{|f| f.x == x and f.y == y}
     pi = @playfield.select{|p| p.x == x and p.y == y}
-    si.size == 1 and (fi.size == 0 and pi.size == 0)
+    #si.size == 1 and (fi.size == 0 and pi.size == 0)
+    return [fi, pi]
   end
 
   def generate_food()
@@ -99,6 +100,11 @@ class Snake < Game
       @snake_direction = [-1,0,180]
     elsif args.inputs.keyboard.key_down.right
       @snake_direction = [1,0,0]
+    end
+
+    pi = @playfield.select{|p| p.x == head.x and p.y == head.y}
+    if pi.size() > 0
+      @snake_length -= 1
     end
   end
 
