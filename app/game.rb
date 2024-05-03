@@ -15,7 +15,8 @@ end
 class Snake < Game
   def initialize args={}
     @score = 0
-    @playfield = [{x:0,y:0,w:1,h:(720/16)}, {x:1,y:0,w:(1280/16),h:1}]
+    @playfield = []
+    @playfield_model = [{x:0,y:0,w:1,h:(720/16)}, {x:1,y:0,w:(1280/16),h:1}]
     @snake_length = 3
     @snake_direction = [1,0,0]
     @snake_pd = 0
@@ -23,6 +24,20 @@ class Snake < Game
     @food_count = 3
     @food = []
     @cooldown = 20
+
+    build_playfield
+
+    puts(@playfield)
+  end
+
+  def build_playfield
+    @playfield_model.each do |p|
+      (0..p.w-1).each do |pw|
+        (0..p.h-1).each do |ph|
+          @playfield << {x: pw, y: ph}
+        end
+      end
+    end
   end
 
   def tick args
@@ -69,7 +84,7 @@ class Snake < Game
   end
 
   def turn_tick args
-    if @snake.size >= @snake_length
+    while @snake.size > @snake_length
       @snake = @snake.drop(1)
     end
     head = @snake[-1].dup()
@@ -79,12 +94,12 @@ class Snake < Game
     head.d = @snake_direction[2]
     head.nd = 0
     if head.x < 0
-      head.x = 1280/16
+      head.x = 1280.div(16)
     elsif head.x > 1280/16
       head.x = 0
     end
     if head.y < 0
-      head.y = 720/16
+      head.y = 720.div(16)
     elsif head.y > 720/16
       head.y = 0
     end
@@ -103,6 +118,7 @@ class Snake < Game
     end
 
     pi = @playfield.select{|p| p.x == head.x and p.y == head.y}
+    #puts("#{@snake[-1]}, #{pi}")
     if pi.size() > 0
       @snake_length -= 1
     end
@@ -116,7 +132,7 @@ class Snake < Game
     elsif p+90 == n or (p == 270 and n == 0)
       return 'red.png' #'snake_left.png'
     else
-      puts("#{p}, #{n}")
+      #puts("#{p}, #{n}")
       return 'gray.png' #'snake_body.png'
     end
   end
@@ -124,11 +140,7 @@ class Snake < Game
   def draw_playfield
     out = []
     @playfield.each do |p|
-      (0..p.w-1).each do |pw|
-        (0..p.h-1).each do |ph|
-          out << {x: pw*16, y: ph*16, w:16, h:16, path: "sprites/square/gray.png"}.sprite!
-        end
-      end
+      out << {x:p.x*16, y:p.y*16, w:16, h:16, path: "sprites/square/gray.png"}.sprite!
     end
     out
   end
