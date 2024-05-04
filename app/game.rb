@@ -40,6 +40,20 @@ class Snake < Game
     end
   end
 
+  def generate_food()
+    good_food = false
+    while not good_food
+      fx = [*1..(1280.div(16) -2)].sample
+      fy = [*1..(720.div(16) -2)].sample
+      good_food = true
+      @playfield.each{|p| if p.x == fx and p.y == fy then good_food = false end}
+      @snake.each{|s| if s.x == fx and s.y == fy then good_food = false end}
+      @food.each{|f| if f.x == fx and f.y == fy then good_food = false end}
+    end
+
+    {x:fx, y:fy, score: [100,100,100,250,250,500].sample(), color: ['red', 'red', 'red', 'blue', 'green'].sample()}
+  end
+
   def tick args
     super args
     @cooldown -=1
@@ -61,34 +75,19 @@ class Snake < Game
     end
   end
 
-  def check_all_impacts(x, y)
-    si = @snake.select{|s| s.x == x and s.y == y}
-    fi = @food.select{|f| f.x == x and f.y == y}
-    pi = @playfield.select{|p| p.x == x and p.y == y}
-    #si.size == 1 and (fi.size == 0 and pi.size == 0)
-    return [fi, pi]
+  def handle_keypress args
+    if args.inputs.keyboard.key_down.up
+      @snake_direction = [0,1,90]
+    elsif args.inputs.keyboard.key_down.down
+      @snake_direction = [0,-1,270]
+    elsif args.inputs.keyboard.key_down.left
+      @snake_direction = [-1,0,180]
+    elsif args.inputs.keyboard.key_down.right
+      @snake_direction = [1,0,0]
+    end
   end
 
-  def generate_food()
-    good_food = false
-    while not good_food
-      fx = [*1..(1280.div(16) -2)].sample
-      fy = [*1..(720.div(16) -2)].sample
-      good_food = true
-      @playfield.each{|p| if p.x == fx and p.y == fy then good_food = false end}
-      @snake.each{|s| if s.x == fx and s.y == fy then good_food = false end}
-      @food.each{|f| if f.x == fx and f.y == fy then good_food = false end}
-    end
-
-    {x:fx, y:fy, score: [100,100,100,250,250,500].sample(), color: ['red', 'red', 'red', 'blue', 'green'].sample()}
-  end
-
-  def turn_tick args
-    while @snake.size > @snake_length
-      @snake = @snake.drop(1)
-    end
-    head = @snake[-1].dup()
-    @snake[-1].nd = @snake_direction[2]
+  def make_head head
     head.x += @snake_direction[0]
     head.y += @snake_direction[1]
     head.d = @snake_direction[2]
@@ -104,18 +103,20 @@ class Snake < Game
       head.y = 0
     end
 
+    head
+  end
+
+  def turn_tick args
+    while @snake.size > @snake_length
+      @snake = @snake.drop(1)
+    end
+    @snake_pd = @snake_direction[2]
+
+    @snake[-1].nd = @snake_direction[2]
+    head = make_head(@snake[-1].dup())
     @snake.append(head)
 
-    @snake_pd = @snake_direction[2]
-    if args.inputs.keyboard.key_down.up
-      @snake_direction = [0,1,90]
-    elsif args.inputs.keyboard.key_down.down
-      @snake_direction = [0,-1,270]
-    elsif args.inputs.keyboard.key_down.left
-      @snake_direction = [-1,0,180]
-    elsif args.inputs.keyboard.key_down.right
-      @snake_direction = [1,0,0]
-    end
+    handle_keypress(args)
 
     pi = @playfield.select{|p| p.x == head.x and p.y == head.y}
     #puts("#{@snake[-1]}, #{pi}")
