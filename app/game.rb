@@ -25,12 +25,10 @@ class Snake < Game
     @food = []
     @cooldown = 20
 
-    build_playfield
-
-    puts(@playfield)
+    build_playfield()
   end
 
-  def build_playfield
+  def build_playfield()
     @playfield_model.each do |p|
       (0..p.w-1).each do |pw|
         (0..p.h-1).each do |ph|
