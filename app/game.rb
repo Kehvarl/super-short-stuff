@@ -21,6 +21,9 @@ class Snake < Game
     @snake_direction = [1,0,0]
     @snake_pd = 0
     @snake = [{x:1,y:1,d:0,nd:0}, {x:2,y:1,d:0,nd:0}, {x:3,y:1,d:0,nd:0}]
+    @head_colors = ['red', 'orange', 'yellow', 'green', 'blue', 'indigo', 'violet']
+    @head_color = 'green'
+    @head_delay = 600
     @food_count = 3
     @food = []
     @cooldown = 20
@@ -65,11 +68,22 @@ class Snake < Game
     if fi.size() > 0
       @food = @food.select{|f| f.x != h.x or f.y != h.y}
       @snake_length += 1
-      @score += fi[0].score
+      if fi[0].color == @head_color
+        @score += fi[0].score * 2
+        @head_delay = 0
+      else
+        @score += fi[0].score
+      end
     end
 
     if @food.size() < @food_count
       @food << generate_food()
+    end
+
+    @head_delay -= 1
+    if @head_delay <= 0
+      @head_delay = 600
+      @head_color = @head_colors.sample
     end
   end
 
@@ -149,7 +163,7 @@ class Snake < Game
     @snake.each do |s|
       #puts(s)
       if s == @snake[-1]
-        out << {x: s.x*16, y: s.y*16, w: 16, h: 16, angle: s.d, path: "sprites/circle/green.png"}.sprite!
+        out << {x: s.x*16, y: s.y*16, w: 16, h: 16, angle: s.d, path: "sprites/circle/#{@head_color}.png"}.sprite!
       else
         out << {x: s.x*16, y: s.y*16, w: 16, h: 16, angle: s.nd, path: "sprites/square/#{get_segment(s.d, s.nd)}"}.sprite!
       end
