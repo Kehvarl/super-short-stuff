@@ -16,7 +16,8 @@ class Snake < Game
   def initialize args={}
     @score = 0
     @playfield = []
-    @playfield_model = [{x:0,y:0,w:1,h:(720/16)}, {x:1,y:0,w:(1280/16),h:1}]
+    @playfield_model = [{x:0,y:0,w:1,h:(720/16)}, {x:1,y:0,w:(1280/16),h:1},
+                        {x:(1280/16)-1,y:0,w:1,h:(720/16)}]
     @snake_length = 3
     @snake_direction = [1,0,0]
     @snake_pd = 0
@@ -35,7 +36,7 @@ class Snake < Game
     @playfield_model.each do |p|
       (0..p.w-1).each do |pw|
         (0..p.h-1).each do |ph|
-          @playfield << {x: pw, y: ph}
+          @playfield << {x: pw + p.x, y: ph + p.y}
         end
       end
     end
