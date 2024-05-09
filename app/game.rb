@@ -23,6 +23,10 @@ class Snake < Game
     @snake_direction = [1,0,0]
     @snake_pd = 0
     @snake = [{x:1,y:1,d:0,nd:0}, {x:2,y:1,d:0,nd:0}, {x:3,y:1,d:0,nd:0}]
+    @walls_block_snake = false
+    @walls_damage_snake = true
+    @snake_block_snake = false
+    @snake_damage_sname = true
     @head_colors = ['red', 'orange', 'yellow', 'green', 'blue', 'indigo', 'violet']
     @head_color = 'green'
     @head_delay = 600
