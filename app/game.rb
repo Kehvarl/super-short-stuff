@@ -16,17 +16,15 @@ class Snake < Game
   def initialize args={}
     @score = 0
     @playfield = []
-    @playfield_model = [[{x:0,y:0,w:1,h:(720/16)}, {x:0,y:0,w:(1280/16),h:1},
-                        {x:(1280/16)-1,y:0,w:1,h:(720/16)}, {x:0,y:(720/16)-1,w:(1280/16),h:1}],
+    @playfield_model = [[{x:0,y:0,w:1,h:(720/16),block:true}, {x:0,y:0,w:(1280/16),h:1,block:true},
+                        {x:(1280/16)-1,y:0,w:1,h:(720/16),block:true}, {x:0,y:(720/16)-1,w:(1280/16),h:1,block:true}],
                       ]
     @snake_length = 3
     @snake_direction = [1,0,0]
     @snake_pd = 0
     @snake = [{x:1,y:1,d:0,nd:0}, {x:2,y:1,d:0,nd:0}, {x:3,y:1,d:0,nd:0}]
-    @walls_block_snake = false
-    @walls_damage_snake = true
     @snake_block_snake = false
-    @snake_damage_sname = true
+    @snake_damage_snake = true
     @head_colors = ['red', 'orange', 'yellow', 'green', 'blue', 'indigo', 'violet']
     @head_color = 'green'
     @head_delay = 600
@@ -34,7 +32,7 @@ class Snake < Game
     @food = []
     @cooldown = 20
 
-    build_playfield()
+    build_playfield(0)
   end
 
   def build_playfield(level=0)
@@ -138,7 +136,7 @@ class Snake < Game
 
     pi = @playfield.select{|p| p.x == head.x and p.y == head.y}
     #puts("#{@snake[-1]}, #{pi}")
-    if pi.size() > 0
+    if pi.size() > 0 and pi[0].block == true
       @snake_length -= 1
     end
   end
