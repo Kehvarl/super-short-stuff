@@ -18,6 +18,8 @@ class Snake < Game
     @playfield = []
     # Need to rework the playfield and make only 2 edges instead of 4 top and bottom are the same edge
     # left and right are also the same edge
+    # Also need a map bigger than the screen
+      # That isnt as easy with the toroid though
     @playfield_model = [[{x:0,y:0,w:1,h:(720/16),block:true}, {x:0,y:0,w:(1280/16),h:1,block:true},
                         {x:(1280/16)-1,y:0,w:1,h:(720/16),block:true}, {x:0,y:(720/16)-1,w:(1280/16),h:1,block:true}],
                       ]
