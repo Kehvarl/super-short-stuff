@@ -1,5 +1,7 @@
 require('app/main_menu.rb')
 require('app/game.rb')
+require('app/leaper.rb')
+require('app/snake.rb')
 
 def setup args
   args.state.game_state = :main_menu
