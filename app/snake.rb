@@ -5,8 +5,6 @@ class Snake < Game
     @playfield = []
     # Need to rework the playfield and make only 2 edges instead of 4 top and bottom are the same edge
     # left and right are also the same edge
-    # Also need a map bigger than the screen
-      # That isnt as easy with the toroid though
     @playfield_model = [[{x:0,y:0,w:1,h:(720/16),block:true}, {x:0,y:0,w:(1280/16),h:1,block:true},
                         {x:(1280/16)-1,y:0,w:1,h:(720/16),block:true}, {x:0,y:(720/16)-1,w:(1280/16),h:1,block:true}],
                       ]
@@ -26,6 +24,13 @@ class Snake < Game
     build_playfield(0)
   end
 
+  # If the screen is 80x45 tiles
+  # and the bottom tile (0) is also the top tile (44)
+  # and the lef tile (0) is also the right tile (79)
+  # How does that impact the toroid behavior
+  # and how do I draw it
+    # That's easy
+    # Just draw each 0 edge twice
   def build_playfield(level=0)
     @playfield_model[level].each do |p|
       (0..p.w-1).each do |pw|
