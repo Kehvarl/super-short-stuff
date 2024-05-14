@@ -5,8 +5,8 @@ class Snake < Game
     @playfield = []
     # Need to rework the playfield and make only 2 edges instead of 4 top and bottom are the same edge
     # left and right are also the same edge
-    @playfield_model = [[{x:0,y:0,w:1,h:(720/16),block:true}, {x:0,y:0,w:(1280/16),h:1,block:true},
-                        {x:(1280/16)-1,y:0,w:1,h:(720/16),block:true}, {x:0,y:(720/16)-1,w:(1280/16),h:1,block:true}],
+    @playfield_model = [[{x:0,y:0,w:1,h:(720/16),block:true}, {x:0,y:0,w:(1280/16),h:1,block:true}],
+                        #{x:(1280/16)-1,y:0,w:1,h:(720/16),block:true}, {x:0,y:(720/16)-1,w:(1280/16),h:1,block:true}],
                       ]
     @snake_length = 3
     @snake_direction = [1,0,0]
@@ -154,6 +154,12 @@ class Snake < Game
     out = []
     @playfield.each do |p|
       out << {x:p.x*16, y:p.y*16, w:16, h:16, path: "sprites/square/gray.png"}.sprite!
+      if p.x == 0
+        out << {x:79*16, y:p.y*16, w:16, h:16, path: "sprites/square/gray.png"}.sprite!
+      end
+      if p.y == 0
+        out << {x:p.x*16, y:44*16, w:16, h:16, path: "sprites/square/gray.png"}.sprite!
+      end
     end
     out
   end
@@ -166,6 +172,14 @@ class Snake < Game
         out << {x: s.x*16, y: s.y*16, w: 16, h: 16, angle: s.d, path: "sprites/circle/#{@head_color}.png"}.sprite!
       else
         out << {x: s.x*16, y: s.y*16, w: 16, h: 16, angle: s.nd, path: "sprites/square/#{get_segment(s.d, s.nd)}"}.sprite!
+      end
+      if s.x == 0
+        out << {x:79*16, y:s.y*16, w: 16, h: 16, angle: s.d, path: "sprites/circle/#{@head_color}.png"}.sprite!
+
+      end
+      if s.y == 0
+        out << {x:s.x*16, y:44*16, w:16, h:16, angle: s.d, path: "sprites/circle/#{@head_color}.png"}.sprite!
+
       end
     end
     out
