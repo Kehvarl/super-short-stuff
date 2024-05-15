@@ -175,11 +175,9 @@ class Snake < Game
       end
       if s.x == 0
         out << {x:79*16, y:s.y*16, w: 16, h: 16, angle: s.d, path: "sprites/circle/#{@head_color}.png"}.sprite!
-
       end
       if s.y == 0
         out << {x:s.x*16, y:44*16, w:16, h:16, angle: s.d, path: "sprites/circle/#{@head_color}.png"}.sprite!
-
       end
     end
     out
