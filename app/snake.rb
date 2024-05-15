@@ -105,13 +105,13 @@ class Snake < Game
     head.d = @snake_direction[2]
     head.nd = 0
     if head.x < 0
-      head.x = 1280.div(16)
-    elsif head.x > 1280/16
+      head.x = 79
+    elsif head.x > 79
       head.x = 0
     end
     if head.y < 0
-      head.y = 720.div(16)
-    elsif head.y > 720/16
+      head.y = 44
+    elsif head.y > 44
       head.y = 0
     end
 
@@ -174,10 +174,18 @@ class Snake < Game
         out << {x: s.x*16, y: s.y*16, w: 16, h: 16, angle: s.nd, path: "sprites/square/#{get_segment(s.d, s.nd)}"}.sprite!
       end
       if s.x == 0
-        out << {x:79*16, y:s.y*16, w: 16, h: 16, angle: s.d, path: "sprites/circle/#{@head_color}.png"}.sprite!
+        if s == @snake[-1]
+          out << {x:79*16, y:s.y*16, w:16, h:16, angle:s.d, path:"sprites/circle/#{@head_color}.png"}.sprite!
+        else
+          out << {x:79*16, y:s.y*16, w:16, h:16, angle:s.nd, path:"sprites/square/#{get_segment(s.d, s.nd)}"}.sprite!
+        end
       end
       if s.y == 0
-        out << {x:s.x*16, y:44*16, w:16, h:16, angle: s.d, path: "sprites/circle/#{@head_color}.png"}.sprite!
+        if s == @snake[-1]
+          out << {x:s.x*16, y:44*16, w:16, h:16, angle:s.d, path:"sprites/circle/#{@head_color}.png"}.sprite!
+        else
+          out << {x:s.x*16, y:44*16, w:16, h:16, angle:s.nd, path:"sprites/square/#{get_segment(s.d, s.nd)}"}.sprite!
+        end
       end
     end
     out
