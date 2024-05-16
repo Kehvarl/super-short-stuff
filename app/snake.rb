@@ -105,13 +105,13 @@ class Snake < Game
     head.d = @snake_direction[2]
     head.nd = 0
     if head.x < 0
-      head.x = 79
-    elsif head.x > 79
+      head.x = 78
+    elsif head.x > 78
       head.x = 0
     end
     if head.y < 0
-      head.y = 44
-    elsif head.y > 44
+      head.y = 43
+    elsif head.y > 43
       head.y = 0
     end
 
