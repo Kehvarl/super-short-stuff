@@ -3,10 +3,8 @@ class Snake < Game
   def initialize args={}
     @score = 0
     @playfield = []
-    # Need to rework the playfield and make only 2 edges instead of 4 top and bottom are the same edge
-    # left and right are also the same edge
+
     @playfield_model = [[{x:0,y:0,w:1,h:(720/16),block:true}, {x:0,y:0,w:(1280/16),h:1,block:true}],
-                        #{x:(1280/16)-1,y:0,w:1,h:(720/16),block:true}, {x:0,y:(720/16)-1,w:(1280/16),h:1,block:true}],
                       ]
     @snake_length = 3
     @snake_direction = [1,0,0]
