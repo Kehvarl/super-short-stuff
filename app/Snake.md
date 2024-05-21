@@ -10,8 +10,12 @@
   * bonus points if desired food
 
 * Some things shrink the snake
-  * 
+  * enemies
+  * poisoned food
+  * timer
 
 * Some things kill the snake
   * Impacting a wall
-  *
+  * something else bad
+
+* each level snake moves faster
