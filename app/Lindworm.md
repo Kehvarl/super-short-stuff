@@ -1,4 +1,4 @@
-* Snake as a 2d sidescrolling platformer.
+* Snake as a 2d upscrolling platformer.
 
 You can only climb up as high as the length of your snake.  So you need to eat food or power ups to get to the top of the level.
 

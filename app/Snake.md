@@ -18,4 +18,7 @@
   * Impacting a wall
   * something else bad
 
-* each level snake moves faster
+* Each level snake moves faster
+* Level ends when
+  * Snake eats ## food
+  * 
