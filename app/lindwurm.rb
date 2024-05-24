@@ -1,5 +1,6 @@
 
 class LindWurm < Game
+  
   # TODO: Setup Game Map
   # TODO: scrolling map
     # Draw map on RT
