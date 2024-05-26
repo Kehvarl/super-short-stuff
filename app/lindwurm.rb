@@ -1,4 +1,4 @@
-
+require('app/game_map.rb')
 class LindWurm < Game
 
   # TODO: Setup Game Map
@@ -15,12 +15,14 @@ class LindWurm < Game
   # TODO: Enemies
   # TODO: damage
 
-  def initialize args={}
+  def initialize args
     @score = 0
-    @playfield = []
-
+    @playfield = Game_Map.new()
     @playfield_model = [[{x:0,y:0,w:1,h:(720/16),block:true}, {x:0,y:0,w:(1280/16),h:1,block:true}],
                        ]
+    @playfield.build_playfield(@playfield_model)
+    @playfield.draw_rt(args)
+
     @snake_length = 3
     @snake_direction = [1,0,0]
     @snake_pd = 0
@@ -28,17 +30,6 @@ class LindWurm < Game
 
     @viewport = [0,0,1280,720]
 
-    build_playfield(0)
-  end
-
-  def build_playfield(level=0)
-    @playfield_model[level].each do |p|
-      (0..p.w-1).each do |pw|
-        (0..p.h-1).each do |ph|
-          @playfield << {x: pw + p.x, y: ph + p.y}
-        end
-      end
-    end
   end
 
   def tick args
@@ -73,6 +64,7 @@ class LindWurm < Game
 
   def render
     out = []
+    out << @playfield.render()
     out << draw_snake
     out
   end
