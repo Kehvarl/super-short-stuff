@@ -19,7 +19,10 @@ class MainMenu
     @frame_max = 3
     @frame_delay = 10
 
-    @menu = [["Snake", :newgame_snake], ["Leap", :newgame_leap], ["Options", :options], ["Exit", :exit]]
+    @menu = [["Snake", :newgame_snake],
+             ["LindWurm", :newgame_lindwurm],
+             ["Leap", :newgame_leap],
+             ["Options", :options], ["Exit", :exit]]
     @selected_index = 0
     @select_event = false
     @message = nil

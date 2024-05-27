@@ -15,6 +15,9 @@ def main_menu_tick args
   if args.state.main_menu.select_event
     puts args.state.main_menu.message
     if args.state.main_menu.message == :newgame_snake
+      args.state.game = Snake.new(args)
+      args.state.game_state = :game
+    elsif args.state.main_menu.message == :newgame_lindwurm
       args.state.game = LindWurm.new(args)
       args.state.game_state = :game
     elsif args.state.main_menu.message == :newgame_leap
