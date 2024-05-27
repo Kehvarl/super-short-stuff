@@ -24,15 +24,46 @@ class LindWurm < Game
     @playfield.draw_rt(args)
 
     @snake_length = 3
-    @snake_direction = [1,0,0]
+    @snake_direction = [1,0,0] # vx,vy,rotation
+    @snake_idle = true
     @snake_pd = 0
-    @snake = [{x:39,y:1,d:0,nd:0}, {x:40,y:1,d:0,nd:0}, {x:41,y:1,d:0,nd:0}]
+    @snake = [{x:39,y:1,d:0,nd:0,s:true}, {x:40,y:1,d:0,nd:0,s:true}, {x:41,y:1,d:0,nd:0,s:true}]
 
     @viewport = [0,0,1280,720]
 
   end
 
+  def handle_keypress args
+    if args.inputs.keyboard.key_down.up
+      @snake_direction = [0,1,90]
+    elsif args.inputs.keyboard.key_down.down
+      @snake_direction = [0,-1,270]
+    elsif args.inputs.keyboard.key_down.left
+      @snake_direction = [-1,0,180]
+    elsif args.inputs.keyboard.key_down.right
+      @snake_direction = [1,0,0]
+    end
+  end
+
+  def unsupported(segment)
+    return @playfield.check_tile(segment.x, segment.y-1, climbing=false, falling=true)
+  end
+
   def tick args
+    # falling
+      # If the tail is unsupported it will fall unless held up by supportedbody
+        # Head drags body down
+      # If the head is unsupported and not moving it will fall by supported body
+        # Tail can dangle safely
+      # Body segments fall if they are unsupported and their adjacent segmant is falling
+    head = @snake[-1]
+    tail = @snake[0]
+    if @snake_idle and unsupported(head)
+      # do head falling thing
+    end
+    if @snake_idle and unsupported(tail)
+      # do tail falling thing
+    end
   end
 
   def draw_snake

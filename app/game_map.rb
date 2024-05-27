@@ -9,14 +9,16 @@ class Game_Map
     @viewport = {x:0,y:0,w:80,h:45}
   end
 
-  def check_tile(x,y)
+  def check_tile(x,y,climbing=false,falling=true)
+    tile = @grid.select{|g| g.x == x and g.y == y}[0]
+    return (climbing and tile.block_climb) or (falling and tile.block_fall)
   end
 
   def build_playfield(playfield_model)
     playfield_model[0].each do |p|
       (0..p.w-1).each do |pw|
         (0..p.h-1).each do |ph|
-          @grid << {x: pw + p.x, y: ph + p.y}
+          @grid << {x: pw + p.x, y: ph + p.y, block_climb:true, block_fall:true}
         end
       end
     end
