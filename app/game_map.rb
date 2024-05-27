@@ -1,11 +1,15 @@
 class Game_Map
+  attr_accessor :w, :h, :grid, :viewport, :check_tile, :build_playfield, :draw_rt, :render
   def initialize
     @w = 80
     @h = 120
     @tile_size = 16
     @background = {r:0,g:64,b:196,a:255}
     @grid = []
-    @viewport = {x:0,y:0,w:1280,h:960}
+    @viewport = {x:0,y:0,w:80,h:45}
+  end
+
+  def check_tile(x,y)
   end
 
   def build_playfield(playfield_model)
@@ -34,17 +38,18 @@ class Game_Map
       if p.x == 0
         out << {x:79*16, y:p.y*16, w:16, h:16, path: "sprites/square/gray.png"}.sprite!
       end
-      if p.y == 0
-        out << {x:p.x*16, y:44*16, w:16, h:16, path: "sprites/square/gray.png"}.sprite!
-      end
+      #if p.y == 0
+      #  out << {x:p.x*16, y:44*16, w:16, h:16, path: "sprites/square/gray.png"}.sprite!
+      #end
     end
     out
   end
 
   def render
     out = []
-    out << {x:0,y:0,w:1280,h:960,
-            source_x:@viewport.x,source_y:@viewport.y,source_w:@viewport.w,source_h:@viewport.h,
+    out << {x:0,y:0,w:1280,h:720,
+            source_x:@viewport.x*16,source_y:@viewport.y*16,
+            source_w:@viewport.w*16,source_h:@viewport.h*16,
             path: :game_map }.sprite!
     out
   end
