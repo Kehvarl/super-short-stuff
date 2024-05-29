@@ -18,7 +18,9 @@ class LindWurm < Game
   def initialize args
     @score = 0
     @playfield = Game_Map.new()
-    @playfield_model = [[{x:0,y:0,w:1,h:(720/16),block:true}, {x:0,y:0,w:(1280/16),h:1,block:true}],
+    @playfield_model = [[{x:0,y:0,w:1,h:(720/16),block:true}, {x:0,y:0,w:(1280/16),h:1,block:true},
+                         {x:20,y:2,w:15,h:1,block:true}, {x:35,y:3,w:10,h:1,block:true},
+                         {x:40,y:5,w:5,h:1,block:true}],
                        ]
     @playfield.build_playfield(@playfield_model)
     @playfield.draw_rt(args)
