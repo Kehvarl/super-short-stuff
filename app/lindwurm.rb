@@ -7,6 +7,7 @@ class LindWurm < Game
     # Viewport into RT centered on character
   # TODO: platforms
   # TODO: climbing
+    # How to climb?
   # TODO: gravity
   # TODO: collectables
   # TODO: exits
