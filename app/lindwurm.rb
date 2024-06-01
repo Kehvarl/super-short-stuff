@@ -4,6 +4,7 @@ class LindWurm < Game
   # TODO: Setup Game Map
     # A background might be cool too
     # And some Paralax
+    # Might try a different project
   # TODO: scrolling map
     # Draw map on RT
     # Viewport into RT centered on character
