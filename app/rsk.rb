@@ -1,5 +1,19 @@
 require('app/game.rb')
 
+# Spritesheets
+# cat
+  # 32x32
+  # sit, down 4
+  # sit, right 4
+  # idle lick right 4
+  # idle earwash right 4
+  # prance right 8
+  # leap right 8
+  # sleep 4
+  # walk right 6
+  # pounce 7
+  # arch right 8
+
 class Rsk < Game
   def initialize args={}
     @robot = {x:632, y:352, w:16, h:32, angle:0}
