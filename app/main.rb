@@ -3,6 +3,7 @@ require('app/game.rb')
 require('app/leaper.rb')
 require('app/snake.rb')
 require('app/lindwurm.rb')
+require('app/rsk.rb')
 
 def setup args
   args.state.game_state = :main_menu
@@ -22,6 +23,9 @@ def main_menu_tick args
       args.state.game_state = :game
     elsif args.state.main_menu.message == :newgame_leap
       args.state.game = Leap.new({})
+      args.state.game_state = :game
+    elsif args.state.main_menu.message == :newgame_rsk
+      args.state.game = Rsk.new(args)
       args.state.game_state = :game
     elsif args.state.main_menu.message == :continue
       args.state.game_state = :game
