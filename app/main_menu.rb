@@ -22,6 +22,7 @@ class MainMenu
     @menu = [["Snake", :newgame_snake],
              ["LindWurm", :newgame_lindwurm],
              ["Leap", :newgame_leap],
+             ["RSK", :newgame_rsk],
              ["Options", :options], ["Exit", :exit]]
     @selected_index = 0
     @select_event = false

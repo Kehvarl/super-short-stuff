@@ -8,6 +8,6 @@ class Game
     end
   end
 
-  def render args
+  def render
   end
 end
