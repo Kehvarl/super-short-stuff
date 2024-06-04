@@ -121,11 +121,39 @@ class Crab < AnimSprite
   end
 end
 
+class Fox < AnimSprite
+
+  def initialize (x,y)
+    super(x,y)
+    @path= "sprites/sheets/fox.png"
+
+    @current_pose = :idle
+    @current_frame = 0
+    @frame_duration = 10
+    @frame_delay = 10
+    @countdown = 0
+    @pose_list = {
+      idle: [0,5,4, [:idle, :idle_look]],
+      idle_look: [1,14,1, [:idle, :idle_look, :fear, :sleep]],
+      walk: [2,8,1, [:idle]],
+      attack: [3,11,1, [:idle]],
+      fear: [4,5,1, [:idle]],
+      sleep: [5,6,3, [:sleep, :idle]],
+      die: [6,7,1, [:idle]]
+    }
+  end
+
+  def tick args
+    super(args)
+  end
+end
+
 class Rsk < Game
   def initialize args={}
     @robot = {x:632, y:352, w:16, h:32, angle:0}
     @cat = Cat.new(200,100)
     @crab = Crab.new(250,100)
+    @fox = Fox.new(400,200)
     @entities = []
   end
 
@@ -134,6 +162,7 @@ class Rsk < Game
 
     @cat.tick args
     @crab.tick args
+    @fox.tick args
 
     if args.inputs.keyboard.key_held.up
       @robot.y += 1
@@ -156,6 +185,7 @@ class Rsk < Game
     out << {**@robot, path:"sprites/circle/indigo.png"}.sprite!
     out << @cat
     out << @crab
+    out << @fox
     out
   end
 end
