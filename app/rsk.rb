@@ -48,6 +48,7 @@ end
 
 class Cat < AnimSprite
   def initialize (x,y)
+    super(x,y)
     @path= "sprites/sheets/cat.png"
 
     @current_pose = :idle_lick
