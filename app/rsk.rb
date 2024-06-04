@@ -22,6 +22,7 @@ class AnimSprite
     @frame_delay = 10
     @countdown = 0
     @pose_list = {
+      #Name: [Row, Frames, Repeat, [Next Anim Options]]
       idle: [0,1,1,[:idle]],
     }
   end
@@ -46,27 +47,10 @@ class AnimSprite
 end
 
 class Cat < AnimSprite
-  attr_sprite
-
   def initialize (x,y)
-    @x = x
-    @y = y
-    @w = 64
-    @h = 64
     @path= "sprites/sheets/cat.png"
-    @angle= 0
-    @tile_x=  0
-    @tile_y=  0
-    @tile_w= 32
-    @tile_h= 32
-    @flip_vertically = false
-    @flip_horizontally = false
 
     @current_pose = :idle_lick
-    @current_frame = 0
-    @frame_duration = 10
-    @frame_delay = 10
-    @countdown = 0
     @pose_list = {
       sit_down: [0,4,4, [:sit_down, :idle_lick, :idle_sleep]],
       sit_right: [1,4,4, [:sit_right, :idle_lick, :idle_sleep]],
@@ -87,27 +71,10 @@ class Cat < AnimSprite
 end
 
 class Crab < AnimSprite
-  attr_sprite
-
   def initialize (x,y)
-    @x = x
-    @y = y
-    @w = 64
-    @h = 64
+    super(x,y)
     @path= "sprites/sheets/crab.png"
-    @angle= 0
-    @tile_x=  0
-    @tile_y=  0
-    @tile_w= 32
-    @tile_h= 32
-    @flip_vertically = false
-    @flip_horizontally = false
-
     @current_pose = :idle
-    @current_frame = 0
-    @frame_duration = 10
-    @frame_delay = 10
-    @countdown = 0
     @pose_list = {
       idle: [0,4,4, [:idle]],
       walk: [1,4,1, [:idle]],
@@ -122,16 +89,11 @@ class Crab < AnimSprite
 end
 
 class Fox < AnimSprite
-
   def initialize (x,y)
     super(x,y)
     @path= "sprites/sheets/fox.png"
 
     @current_pose = :idle
-    @current_frame = 0
-    @frame_duration = 10
-    @frame_delay = 10
-    @countdown = 0
     @pose_list = {
       idle: [0,5,4, [:idle, :idle_look]],
       idle_look: [1,14,1, [:idle, :idle_look, :fear, :sleep]],
