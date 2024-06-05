@@ -2,6 +2,7 @@ require('app/game.rb')
 
 class AnimSprite
   attr_sprite
+
   def initialize(x,y)
     @x = x
     @y = y
@@ -44,6 +45,10 @@ class AnimSprite
     @tile_x = @current_frame*32
     @tile_y = @pose_list[@current_pose][0]*32
   end
+
+  def bounding_box(color={r:255,g:0,b:0})
+    {x:@x, y:@y, w:@w, h:@h, **color}.border!
+  end
 end
 
 class Cat < AnimSprite
@@ -65,10 +70,6 @@ class Cat < AnimSprite
       arch: [9,8,1, [:sit_down]]
     }
   end
-
-  def tick args
-    super args
-  end
 end
 
 class Crab < AnimSprite
@@ -82,10 +83,6 @@ class Crab < AnimSprite
       die: [2,4,1, [:idle]],
       attack: [3,4,1, [:idle]]
     }
-  end
-
-  def tick args
-    super(args)
   end
 end
 
@@ -105,9 +102,21 @@ class Fox < AnimSprite
       die: [6,7,1, [:idle]]
     }
   end
+end
 
-  def tick args
-    super(args)
+class Armadillo < AnimSprite
+  def initialize (x,y)
+    super(x,y)
+    @path= "sprites/sheets/armadillo.png"
+
+    @current_pose = :idle
+    @pose_list = {
+      idle: [0,8,2, [:idle, :idle_ball]],
+      walk: [1,4,1, [:idle]],
+      idle_ball: [2,8,1, [:idle, :duck, :die]],
+      duck: [3,3,1, [:idle]],
+      die: [4,3,1, [:idle]]
+    }
   end
 end
 
@@ -117,6 +126,7 @@ class Rsk < Game
     @cat = Cat.new(200,100)
     @crab = Crab.new(250,100)
     @fox = Fox.new(400,200)
+    @armadillo = Armadillo.new(500,200)
     @entities = []
   end
 
@@ -126,6 +136,7 @@ class Rsk < Game
     @cat.tick args
     @crab.tick args
     @fox.tick args
+    @armadillo.tick args
 
     if args.inputs.keyboard.key_held.up
       @robot.y += 1
@@ -149,6 +160,7 @@ class Rsk < Game
     out << @cat
     out << @crab
     out << @fox
+    out << @armadillo
     out
   end
 end
