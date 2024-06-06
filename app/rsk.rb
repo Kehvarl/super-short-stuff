@@ -120,6 +120,24 @@ class Armadillo < AnimSprite
   end
 end
 
+class Squirrel < AnimSprite
+  def initialize (x,y)
+    super(x,y)
+    @path= "sprites/sheets/squirrel.png"
+
+    @current_pose = :idle
+    @pose_list = {
+      idle: [0,6,2, [:idle, :idle_look, :idle_forage]],
+      idle_look: [1,6,1, [:idle, :idle_look, :hop, :idle_nibble]],
+      hop: [2,8,1, [:idle, :fear]],
+      idle_forage: [3,4,1, [:idle]],
+      idle_nibble: [4,2,1, [:idle]],
+      fear: [5,4,1, [:idle]],
+      die: [6,4,1, [:idle]]
+    }
+  end
+end
+
 class Rsk < Game
   def initialize args={}
     @robot = {x:632, y:352, w:16, h:32, angle:0}
@@ -127,6 +145,7 @@ class Rsk < Game
     @crab = Crab.new(250,100)
     @fox = Fox.new(400,200)
     @armadillo = Armadillo.new(500,200)
+    @squirrel = Squirrel.new(600,200)
     @entities = []
   end
 
@@ -137,6 +156,7 @@ class Rsk < Game
     @crab.tick args
     @fox.tick args
     @armadillo.tick args
+    @squirrel.tick args
 
     if args.inputs.keyboard.key_held.up
       @robot.y += 1
@@ -161,6 +181,7 @@ class Rsk < Game
     out << @crab
     out << @fox
     out << @armadillo
+    out << @squirrel
     out
   end
 end
