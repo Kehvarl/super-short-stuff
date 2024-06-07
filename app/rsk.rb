@@ -141,22 +141,41 @@ end
 class Rsk < Game
   def initialize args={}
     @robot = {x:632, y:352, w:16, h:32, angle:0}
-    @cat = Cat.new(200,100)
-    @crab = Crab.new(250,100)
-    @fox = Fox.new(400,200)
-    @armadillo = Armadillo.new(500,200)
-    @squirrel = Squirrel.new(600,200)
-    @entities = []
+    @entities = new_entities(1)
+    puts @entities
+  end
+
+  def new_entities(count)
+    out = []
+    (0..count).each do
+      a = [:armadillo, :crab, :fox, :squirrel].sample
+      x = [0..1264].sample
+      y = [0..704].sample
+
+      case a
+      when :armadillo
+        out << Armadillo.new(x,y)
+      when :crab
+        out << Crab.new(x,y)
+      when :fox
+        out << Fox.new(x,y)
+      when :squirrel
+        out << Squirrel.new(x,y)
+      end
+
+      x = [0..1264].sample
+      y = [0..704].sample
+      out << Cat.new(x,y)
+
+      out
+    end
+
   end
 
   def tick args
     super(args)
 
-    @cat.tick args
-    @crab.tick args
-    @fox.tick args
-    @armadillo.tick args
-    @squirrel.tick args
+    #@entities.each { |e| e.tick(args) }
 
     if args.inputs.keyboard.key_held.up
       @robot.y += 1
@@ -177,11 +196,9 @@ class Rsk < Game
   def render
     out = []
     out << {**@robot, path:"sprites/circle/indigo.png"}.sprite!
-    out << @cat
-    out << @crab
-    out << @fox
-    out << @armadillo
-    out << @squirrel
+
+    #@entities.each {|c| out << c }
+
     out
   end
 end
