@@ -89,7 +89,7 @@ class AnimSprite
       move_tick(args)
     end
     animation_tick(args)
-    if not @moving and rand(100) <= 1
+    if not @moving and rand(1000) <= 1
       move_to(rand(1216), rand(656))
     end
   end
