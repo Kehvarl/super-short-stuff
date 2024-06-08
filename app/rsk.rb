@@ -2,6 +2,7 @@ require('app/game.rb')
 
 class AnimSprite
   attr_sprite
+  attr_accessor :current_frame
 
   def initialize(x,y)
     @x = x
@@ -26,6 +27,10 @@ class AnimSprite
       #Name: [Row, Frames, Repeat, [Next Anim Options]]
       idle: [0,1,1,[:idle]],
     }
+  end
+
+  def max_frame()
+    @pose_list[@current_pose][1]
   end
 
   def tick(args)
@@ -141,41 +146,44 @@ end
 class Rsk < Game
   def initialize args={}
     @robot = {x:632, y:352, w:16, h:32, angle:0}
-    @entities = new_entities(1)
-    puts @entities
+    @entities = new_entities(15)
   end
 
   def new_entities(count)
     out = []
-    (0..count).each do
+    while out.size() < count
       a = [:armadillo, :crab, :fox, :squirrel].sample
-      x = [0..1264].sample
-      y = [0..704].sample
+      x = rand(1216)
+      y = rand(756)
 
       case a
       when :armadillo
-        out << Armadillo.new(x,y)
+        e = Armadillo.new(x,y)
       when :crab
-        out << Crab.new(x,y)
+        e =  Crab.new(x,y)
       when :fox
-        out << Fox.new(x,y)
+        e = Fox.new(x,y)
       when :squirrel
-        out << Squirrel.new(x,y)
+        e = Squirrel.new(x,y)
       end
+      e.current_frame = rand(e.max_frame)
 
-      x = [0..1264].sample
-      y = [0..704].sample
-      out << Cat.new(x,y)
-
-      out
+      if not out.any_intersect_rect?(e)
+        out << e
+      end
     end
 
+    x = rand(1216)
+    y = rand(756)
+    out << Cat.new(x,y)
+
+    out
   end
 
   def tick args
     super(args)
 
-    #@entities.each { |e| e.tick(args) }
+    @entities.each { |e| e.tick(args) }
 
     if args.inputs.keyboard.key_held.up
       @robot.y += 1
@@ -196,7 +204,7 @@ class Rsk < Game
   def render
     out = []
     out << {**@robot, path:"sprites/circle/indigo.png"}.sprite!
-
+    out << @entities
     #@entities.each {|c| out << c }
 
     out
