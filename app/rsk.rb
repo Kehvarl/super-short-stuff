@@ -7,6 +7,9 @@ class AnimSprite
   def initialize(x,y)
     @x = x
     @y = y
+    @moving = false
+    @dx = x
+    @dy = y
     @w = 64
     @h = 64
     @path= "sprites/square/green.png"
@@ -26,14 +29,42 @@ class AnimSprite
     @pose_list = {
       #Name: [Row, Frames, Repeat, [Next Anim Options]]
       idle: [0,1,1,[:idle]],
+      walk: [0,1,1,[:idle]],
     }
+  end
+
+  def move_to(x,y)
+    @dx = x
+    @dy = y
+    @moving = true
+    @current_pose = :walk
   end
 
   def max_frame()
     @pose_list[@current_pose][1]
   end
 
-  def tick(args)
+  def move_tick(args)
+    if @dx > @x
+      @x +=1
+      @flip_horizontally = false
+    elsif @dx < @x
+      @x -= 1
+      @flip_horizontally = true
+    end
+    if @dy > @y
+      @y += 1
+    elsif @dy < @y
+      @y -=1
+    end
+    if @dx == @x and @dy == @y
+      @moving = false
+      @flip_horizontally = false
+      @current_pose = @pose_list[@current_pose][3].sample()
+    end
+  end
+
+  def animation_tick(args)
     @frame_duration -= 1
     if @frame_duration <= 0
       @frame_duration = @frame_delay
@@ -42,13 +73,25 @@ class AnimSprite
         @current_frame = 0
         @countdown -= 1
         if @countdown <= 0
-          @current_pose = @pose_list[@current_pose][3].sample()
+          if not @moving
+            @current_pose = @pose_list[@current_pose][3].sample()
+          end
           @countdown = @pose_list[@current_pose][2]
         end
       end
     end
     @tile_x = @current_frame*32
     @tile_y = @pose_list[@current_pose][0]*32
+  end
+
+  def tick(args)
+    if @moving
+      move_tick(args)
+    end
+    animation_tick(args)
+    if not @moving and rand(1000) <= 1
+      move_to(rand(1216), rand(656))
+    end
   end
 
   def bounding_box(color={r:255,g:0,b:0})
@@ -67,10 +110,10 @@ class Cat < AnimSprite
       sit_right: [1,4,4, [:sit_right, :idle_lick, :idle_sleep]],
       idle_lick: [2,4,2, [:idle_lick, :idle_ear, :idle_sleep, :arch]],
       idle_ear: [3,4,1, [:idle_lick, :idle_sleep, :arch]],
-      prance: [4,8,1, [:sit_down]],
+      walk: [4,8,1, [:sit_down, :pat]],
       leap: [5,8,1, [:sit_down]],
       idle_sleep: [6,4,4, [:idle_sleep, :idle_ear, :idle_sleep, :arch]],
-      walk: [7,6,1, [:sit_down]],
+      pat: [7,6,1, [:sit_down]],
       pounce: [8,7,1, [:sit_down]],
       arch: [9,8,1, [:sit_down]]
     }
@@ -133,8 +176,8 @@ class Squirrel < AnimSprite
     @current_pose = :idle
     @pose_list = {
       idle: [0,6,2, [:idle, :idle_look, :idle_forage]],
-      idle_look: [1,6,1, [:idle, :idle_look, :hop, :idle_nibble]],
-      hop: [2,8,1, [:idle, :fear]],
+      idle_look: [1,6,1, [:idle, :idle_look, :idle_nibble]],
+      walk: [2,8,1, [:idle]],
       idle_forage: [3,4,1, [:idle]],
       idle_nibble: [4,2,1, [:idle]],
       fear: [5,4,1, [:idle]],
@@ -154,7 +197,7 @@ class Rsk < Game
     while out.size() < count
       a = [:armadillo, :crab, :fox, :squirrel].sample
       x = rand(1216)
-      y = rand(756)
+      y = rand(656)
 
       case a
       when :armadillo
@@ -174,7 +217,7 @@ class Rsk < Game
     end
 
     x = rand(1216)
-    y = rand(756)
+    y = rand(656)
     out << Cat.new(x,y)
 
     out
