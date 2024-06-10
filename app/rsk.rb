@@ -44,20 +44,43 @@ class AnimSprite
     @pose_list[@current_pose][1]
   end
 
-  def move_tick(args)
-    if @dx > @x
+  def check_collisions(entities)
+    if @dx < 0
+      vx = -1
+    elsif @dx > 0
+      vx = 1
+    else
+      vx = 0
+    end
+    if @dy < 0
+      vy = -1
+    elsif @dy > 0
+      vy = 1
+    else
+      vy = 0
+    end
+
+    temp = {x:(@x+vx), y:(@y+vy), w:@w, h:@h}
+    collisions = entities.select{|e| temp.intersect_rect?(e)}
+    collisions
+  end
+
+  def move_tick(args, entities)
+    collisions = check_collisions(entities)
+
+    if @dx > @x and collisions.size <= 1
       @x +=1
       @flip_horizontally = false
-    elsif @dx < @x
+    elsif @dx < @x and collisions.size <= 1
       @x -= 1
       @flip_horizontally = true
     end
-    if @dy > @y
+    if @dy > @y and collisions.size <= 1
       @y += 1
-    elsif @dy < @y
+    elsif @dy < @y and collisions.size <= 1
       @y -=1
     end
-    if @dx == @x and @dy == @y
+    if @dx == @x and @dy == @y or collisions.size > 1
       @moving = false
       @flip_horizontally = false
       @current_pose = @pose_list[@current_pose][3].sample()
@@ -84,9 +107,9 @@ class AnimSprite
     @tile_y = @pose_list[@current_pose][0]*32
   end
 
-  def tick(args)
+  def tick(args, entities)
     if @moving
-      move_tick(args)
+      move_tick(args, entities)
     end
     animation_tick(args)
     if not @moving and rand(1000) <= 1
@@ -226,7 +249,7 @@ class Rsk < Game
   def tick args
     super(args)
 
-    @entities.each { |e| e.tick(args) }
+    @entities.each { |e| e.tick(args, @entities) }
 
     if args.inputs.keyboard.key_held.up
       @robot.y += 1
