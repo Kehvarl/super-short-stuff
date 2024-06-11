@@ -2,7 +2,7 @@ require('app/game.rb')
 
 class AnimSprite
   attr_sprite
-  attr_accessor :current_frame
+  attr_accessor :current_frame, :x, :y, :dx, :dy, :moving
 
   def initialize(x,y)
     @x = x
@@ -206,6 +206,52 @@ class Squirrel < AnimSprite
       fear: [5,4,1, [:idle]],
       die: [6,4,1, [:idle]]
     }
+  end
+end
+
+class Entity
+  def initialize(x,y,type,disguise)
+    @type = create(type)
+    @disguise = create(disguise)
+    @in_disguise = true
+  end
+
+  def create(type)
+    case a
+    when :armadillo
+      e = Armadillo.new(x,y)
+    when :crab
+      e =  Crab.new(x,y)
+    when :fox
+      e = Fox.new(x,y)
+    when :squirrel
+      e = Squirrel.new(x,y)
+    end
+    return e
+  end
+
+  def uncover
+    @type.x = @disguise.x
+    @type.y = @disguise.y
+    @type.dx = @disguise.dx
+    @type.dy = @disguise.dy
+    @type.moving = @disguise.moving
+    @in_disguise = false
+  end
+
+  def tick(args, entities)
+    if @in_disguise
+      @disguise.tick(args, entities)
+    else
+      @type.tick(args, entities)
+    end
+  end
+
+  def render
+    if @in_disguise
+      return @disguise
+    end
+    return @type
   end
 end
 
