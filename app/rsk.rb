@@ -210,14 +210,22 @@ class Squirrel < AnimSprite
 end
 
 class Entity
+  attr_accessor  :x, :y, :w, :h
+
   def initialize(x,y,type,disguise)
-    @type = create(type)
-    @disguise = create(disguise)
+    @creature = create(x,y,type)
+    @disguise = create(x,y,disguise)
     @in_disguise = true
+    @x = x
+    @y = y
+    @w = @disguise.w
+    @h = @disguise.h
   end
 
-  def create(type)
-    case a
+  def create(x,y,type)
+    case type
+    when :cat
+      e = Cat.new(x,y)
     when :armadillo
       e = Armadillo.new(x,y)
     when :crab
@@ -231,19 +239,31 @@ class Entity
   end
 
   def uncover
-    @type.x = @disguise.x
-    @type.y = @disguise.y
-    @type.dx = @disguise.dx
-    @type.dy = @disguise.dy
-    @type.moving = @disguise.moving
+    @creature.x = @disguise.x
+    @creature.y = @disguise.y
+    @creature.dx = @disguise.dx
+    @creature.dy = @disguise.dy
+    @creature.moving = false
     @in_disguise = false
+  end
+
+  def check_collisions(entities)
+    if @in_disguise
+      return @disguise.check_collisions(entities)
+    else
+      return @creature.check_collisions(entities)
+    end
   end
 
   def tick(args, entities)
     if @in_disguise
       @disguise.tick(args, entities)
+      @x = @disguise.x
+      @y = @disguise.y
     else
-      @type.tick(args, entities)
+      @creature.tick(args, entities)
+      @x = @creature.x
+      @y = @creature.y
     end
   end
 
@@ -251,14 +271,14 @@ class Entity
     if @in_disguise
       return @disguise
     end
-    return @type
+    return @creature
   end
 end
 
 class Rsk < Game
   def initialize args={}
     @robot = {x:632, y:352, w:16, h:32, angle:0}
-    @entities = new_entities(15)
+    @entities = [Entity.new(640, 480, :cat, :fox)] #new_entities(15)
   end
 
   def new_entities(count)
@@ -280,7 +300,7 @@ class Rsk < Game
       end
       e.current_frame = rand(e.max_frame)
 
-      if not out.any_intersect_rect?(e)
+      if not out.any__rect?(e)
         out << e
       end
     end
@@ -311,13 +331,16 @@ class Rsk < Game
       @robot.angle = 0
     end
 
+    collisions = @entities.select{|e| @robot.intersect_rect?(e)}
+    collisions.each { |c| c.uncover() }
+
   end
 
   def render
     out = []
     out << {**@robot, path:"sprites/circle/indigo.png"}.sprite!
-    out << @entities
-    #@entities.each {|c| out << c }
+    #out << @entities
+    @entities.each {|c| out << c.render() }
 
     out
   end
