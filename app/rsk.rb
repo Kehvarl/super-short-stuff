@@ -273,41 +273,36 @@ class Entity
     end
     return @creature
   end
+
+  def intersect_rect?(other, tolerance)
+    return @disguise.intersect_rect?(other, tolerance)
+  end
 end
 
 class Rsk < Game
   def initialize args={}
     @robot = {x:632, y:352, w:16, h:32, angle:0}
-    @entities = [Entity.new(640, 480, :cat, :fox)] #new_entities(15)
+    @entities = new_entities(15)
   end
 
   def new_entities(count)
     out = []
     while out.size() < count
       a = [:armadillo, :crab, :fox, :squirrel].sample
+      b = [:armadillo, :crab, :fox, :squirrel, :cat].sample
       x = rand(1216)
       y = rand(656)
 
-      case a
-      when :armadillo
-        e = Armadillo.new(x,y)
-      when :crab
-        e =  Crab.new(x,y)
-      when :fox
-        e = Fox.new(x,y)
-      when :squirrel
-        e = Squirrel.new(x,y)
-      end
-      e.current_frame = rand(e.max_frame)
+      e = Entity.new(x, y, b, a)
 
-      if not out.any__rect?(e)
+      if not out.any_intersect_rect?(e)
         out << e
       end
     end
 
     x = rand(1216)
     y = rand(656)
-    out << Cat.new(x,y)
+    out << Entity.new(x, y, :cat, [:armadillo, :crab, :fox, :squirrel].sample)
 
     out
   end
