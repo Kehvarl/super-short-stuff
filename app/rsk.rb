@@ -210,12 +210,13 @@ class Squirrel < AnimSprite
 end
 
 class Entity
-  attr_accessor  :x, :y, :w, :h
+  attr_accessor  :x, :y, :w, :h, :is_cat
 
   def initialize(x,y,type,disguise)
     @creature = create(x,y,type)
     @disguise = create(x,y,disguise)
     @in_disguise = true
+    @is_cat = false
     @x = x
     @y = y
     @w = @disguise.w
@@ -226,6 +227,7 @@ class Entity
     case type
     when :cat
       e = Cat.new(x,y)
+      @is_cat = true
     when :armadillo
       e = Armadillo.new(x,y)
     when :crab
