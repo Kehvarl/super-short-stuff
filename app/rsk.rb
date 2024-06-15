@@ -285,17 +285,18 @@ class Rsk < Game
   def initialize args={}
     @robot = {x:632, y:352, w:16, h:32, angle:0}
     @entities = new_entities(15)
+    @kitten_found = false
   end
 
   def new_entities(count)
     out = []
     while out.size() < count
-      a = [:armadillo, :crab, :fox, :squirrel].sample
-      b = [:armadillo, :crab, :fox, :squirrel, :cat].sample
+      type = [:armadillo, :crab, :fox, :squirrel].sample
+      disguise = ([:armadillo, :crab, :fox, :squirrel, :cat]-[type]).sample
       x = rand(1216)
       y = rand(656)
 
-      e = Entity.new(x, y, b, a)
+      e = Entity.new(x, y, type, disguise)
 
       if not out.any_intersect_rect?(e)
         out << e
@@ -329,7 +330,13 @@ class Rsk < Game
     end
 
     collisions = @entities.select{|e| @robot.intersect_rect?(e)}
-    collisions.each { |c| c.uncover() }
+    collisions.each do |c|
+      c.uncover()
+      if c.is_cat
+        @kitten_found = true
+        args.state.game_state = :pause_menu
+      end
+    end
 
   end
 
