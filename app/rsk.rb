@@ -216,7 +216,7 @@ class Entity
     @creature = create(x,y,type)
     @disguise = create(x,y,disguise)
     @in_disguise = true
-    @is_cat = false
+    @is_cat = (type == :cat)
     @x = x
     @y = y
     @w = @disguise.w
